@@ -29,7 +29,7 @@
             android:name="com.amap.api.v2.apikey"
             android:value="1be0bf95f0bf73c773e0af0c2c30e306"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

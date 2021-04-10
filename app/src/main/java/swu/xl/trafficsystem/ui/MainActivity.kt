@@ -1,8 +1,9 @@
-package swu.xl.trafficsystem
+package swu.xl.trafficsystem.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.amap.api.services.route.*
+import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.amap.BusRouteHelper
 
 class MainActivity : AppCompatActivity() {
