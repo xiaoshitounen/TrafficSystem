@@ -3,7 +3,9 @@ package swu.xl.trafficsystem.thirdparty.splash;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PointF;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +36,10 @@ public class BubbleViewActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(Color.WHITE);
+        }
         hxbIv = (ImageView) findViewById(R.id.hxb_iv);
         hxbTv = (TextView) findViewById(R.id.center_tv);
         bezierView = (BubbleView) findViewById(R.id.circle_view);
@@ -68,6 +74,7 @@ public class BubbleViewActivity extends BaseActivity {
         this.startActivity(new Intent(this, MainActivity.class));
         //淡入淡出
         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        finish();
     }
 
     private void initPoint() {

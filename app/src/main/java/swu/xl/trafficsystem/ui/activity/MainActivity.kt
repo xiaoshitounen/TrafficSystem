@@ -1,23 +1,20 @@
 package swu.xl.trafficsystem.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import com.amap.api.services.route.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.amap.BusRouteHelper
+import swu.xl.trafficsystem.base.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var routeSearch: RouteSearch
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun getLayoutId() = R.layout.activity_main
 
+    override fun initData() {
         println("onCreate")
-        initListener()
     }
 
-    private fun initListener() {
+    override fun initListener() {
         routeSearch = RouteSearch(this)
         routeSearch.setRouteSearchListener(object : RouteSearch.OnRouteSearchListener {
             override fun onDriveRouteSearched(p0: DriveRouteResult?, p1: Int) {

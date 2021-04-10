@@ -27,7 +27,8 @@
     <swu.xl.trafficsystem.thirdparty.splash.BubbleView
         android:id="@+id/circle_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#ffffff"/>
 
     <TextView
         android:id="@+id/center_tv"
