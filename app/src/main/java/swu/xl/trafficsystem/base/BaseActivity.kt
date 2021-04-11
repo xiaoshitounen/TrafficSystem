@@ -8,12 +8,15 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        preInit()
         setContentView(getLayoutId())
         initData()
         initListener()
     }
 
     abstract fun getLayoutId(): Int
+
+    protected open fun preInit() {}
 
     protected open fun initData() {}
 

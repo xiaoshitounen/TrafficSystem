@@ -3,7 +3,7 @@ package swu.xl.trafficsystem.util
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 
-object SimpleData {
+object SimpleDataUtil {
     @SuppressLint("SimpleDateFormat")
     private val format = SimpleDateFormat("yyyy-MM-dd")
 
