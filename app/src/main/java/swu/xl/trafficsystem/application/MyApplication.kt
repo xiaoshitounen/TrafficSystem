@@ -1,6 +1,7 @@
 package swu.xl.trafficsystem.application
 
 import android.app.Application
+import swu.xl.trafficsystem.store.TrafficSystemStore
 
 class MyApplication : Application() {
     companion object {
@@ -12,5 +13,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         application = this
+        TrafficSystemStore.init(this)
     }
 }

@@ -17,6 +17,7 @@ import swu.xl.trafficsystem.amap.AMapUtil
 import swu.xl.trafficsystem.amap.BusRouteHelper
 import swu.xl.trafficsystem.base.BaseActivity
 import swu.xl.trafficsystem.log.TrafficSystemLogger
+import swu.xl.trafficsystem.manager.MapManager
 import swu.xl.trafficsystem.util.PermissionUtil
 import swu.xl.trafficsystem.util.ToastUtil
 
@@ -48,21 +49,32 @@ class MainActivity : BaseActivity() {
     }
 
     private fun startLocation() {
-        val locationStyle = MyLocationStyle()
-        locationStyle.showMyLocation(false)
-        map.map.myLocationStyle = locationStyle
-        map.map.isMyLocationEnabled = true
-        map.map.isTrafficEnabled = true
-        map.map.showIndoorMap(true)
+        //设置是否显示内部建筑
+        map.map.showIndoorMap(MapManager.getShowIndoorEnabled())
+        //设置是否显示路况
+        map.map.isTrafficEnabled = MapManager.getTrafficEnabled()
+        //设置地图图标
+        map.map.uiSettings.apply {
+            //缩放按钮
+            isZoomControlsEnabled = MapManager.getZoomEnabled()
+            //指南按钮
+            isCompassEnabled = MapManager.getCompassEnabled()
+            //定位按钮
+            isMyLocationButtonEnabled = MapManager.getLocationEnabled()
+            //比例尺按钮
+            isScaleControlsEnabled = MapManager.getScaleEnabled()
+            //logo按钮
+            logoPosition = MapManager.getLogoPosition()
+        }
         init()
     }
 
-    fun init() {
+    private fun init() {
         locationClient = AMapLocationClient(this)
         locationClient.setLocationListener {
             ToastUtil.toast("定位：${it.city}")
-            map.map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
-                LatLng(it.latitude, it.longitude), 17F, 90F, 300F
+            map.map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
+                LatLng(it.latitude, it.longitude), 17F, 0F, 0F
             )))
             locationClient.stopLocation()
             map.map.addMarker(MarkerOptions()
