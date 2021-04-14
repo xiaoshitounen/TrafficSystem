@@ -30,6 +30,27 @@
                 android:src="@drawable/map_compass"
                 android:layout_marginTop="15dp"
                 />
+
+            <RelativeLayout
+                android:id="@+id/map_location"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/map_location_bg"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                >
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/map_location"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </LinearLayout>

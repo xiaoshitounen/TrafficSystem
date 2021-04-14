@@ -50,13 +50,13 @@ class MainActivity : BaseActivity() {
 
     override fun initData() {
         if (PermissionUtil.checkLocation(this)) {
-            startLocation()
+            initMap()
         } else {
             PermissionUtil.requestLocation(this)
         }
     }
 
-    private fun startLocation() {
+    private fun initMap() {
         //设置是否显示内部建筑
         map.map.showIndoorMap(MapManager.getShowIndoorEnabled())
         //设置是否显示路况
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity() {
         //设置默认地图图标
         map.map.uiSettings.apply {
             //缩放按钮
-            isZoomControlsEnabled = MapManager.getZoomEnabled()
+            isZoomControlsEnabled = false
             //指南按钮 使用自定义
             isCompassEnabled = false
             //定位按钮
@@ -74,8 +74,9 @@ class MainActivity : BaseActivity() {
             //logo按钮
             logoPosition = MapManager.getLogoPosition()
         }
-        init()
+        startLocation()
         initCompass()
+        initLocation()
         initSetting()
     }
 
@@ -104,6 +105,13 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    //处理自动定位
+    private fun initLocation() {
+        map_location.setOnClickListener {
+            startLocation()
+        }
+    }
+
     private fun initSetting() {
         map_normal.setOnClickListener {
             map.map.mapType = AMap.MAP_TYPE_NORMAL
@@ -122,12 +130,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun init() {
+    private fun startLocation() {
         //drawer.openDrawer(Gravity.RIGHT)
         //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         locationClient = AMapLocationClient(this)
         locationClient.setLocationListener {
-            ToastUtil.toast("定位：${it.city}")
+            //CameraPosition4个参数: 位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）
             map.map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
                 LatLng(it.latitude, it.longitude), 17F, 0F, 0F
             )))
@@ -178,7 +186,7 @@ class MainActivity : BaseActivity() {
         when (requestCode) {
             PermissionUtil.location_code -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startLocation()
+                    initMap()
                 } else {
                     ToastUtil.toast("用户拒绝授予定位权限")
                 }
