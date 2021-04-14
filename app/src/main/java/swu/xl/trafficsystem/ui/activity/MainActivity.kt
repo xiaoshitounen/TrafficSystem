@@ -5,8 +5,11 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.Gravity
 import android.view.View.*
+import androidx.drawerlayout.widget.DrawerLayout
 import com.amap.api.location.AMapLocationClient
+import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.*
 import com.amap.api.services.core.LatLonPoint
@@ -67,9 +70,30 @@ class MainActivity : BaseActivity() {
             logoPosition = MapManager.getLogoPosition()
         }
         init()
+        initSetting()
+    }
+
+    private fun initSetting() {
+        map_normal.setOnClickListener {
+            map.map.mapType = AMap.MAP_TYPE_NORMAL
+        }
+
+        map_satellite.setOnClickListener {
+            map.map.mapType = AMap.MAP_TYPE_SATELLITE
+        }
+
+        map_night.setOnClickListener {
+            map.map.mapType = AMap.MAP_TYPE_NIGHT
+        }
+
+        map_traffic.setOnClickListener {
+            map.map.isTrafficEnabled = !map.map.isTrafficEnabled
+        }
     }
 
     private fun init() {
+        //drawer.openDrawer(Gravity.RIGHT)
+        //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         locationClient = AMapLocationClient(this)
         locationClient.setLocationListener {
             ToastUtil.toast("定位：${it.city}")
