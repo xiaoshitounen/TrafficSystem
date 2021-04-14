@@ -5,13 +5,16 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.view.Gravity
 import android.view.View.*
-import androidx.drawerlayout.widget.DrawerLayout
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
-import com.amap.api.maps.model.*
+import com.amap.api.maps.model.BitmapDescriptorFactory
+import com.amap.api.maps.model.CameraPosition
+import com.amap.api.maps.model.LatLng
+import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.route.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,6 +31,8 @@ import swu.xl.trafficsystem.util.ToastUtil
 class MainActivity : BaseActivity() {
     private lateinit var routeSearch: RouteSearch
     private lateinit var locationClient: AMapLocationClient
+
+    private var lastBearing = 0F
 
     override fun getLayoutId() = R.layout.activity_main
 
@@ -56,21 +61,47 @@ class MainActivity : BaseActivity() {
         map.map.showIndoorMap(MapManager.getShowIndoorEnabled())
         //设置是否显示路况
         map.map.isTrafficEnabled = MapManager.getTrafficEnabled()
-        //设置地图图标
+        //设置默认地图图标
         map.map.uiSettings.apply {
             //缩放按钮
             isZoomControlsEnabled = MapManager.getZoomEnabled()
-            //指南按钮
-            isCompassEnabled = MapManager.getCompassEnabled()
+            //指南按钮 使用自定义
+            isCompassEnabled = false
             //定位按钮
-            isMyLocationButtonEnabled = MapManager.getLocationEnabled()
+            isMyLocationButtonEnabled = false
             //比例尺按钮
             isScaleControlsEnabled = MapManager.getScaleEnabled()
             //logo按钮
             logoPosition = MapManager.getLogoPosition()
         }
         init()
+        initCompass()
         initSetting()
+    }
+
+    //处理自定义的指南针偏转
+    private fun initCompass() {
+        map.map.setOnCameraChangeListener(object : AMap.OnCameraChangeListener {
+            override fun onCameraChangeFinish(cameraPosition: CameraPosition?) {
+                //do nothing
+            }
+
+            override fun onCameraChange(cameraPosition: CameraPosition?) {
+                cameraPosition?.let {
+                    val bearing = 360 - it.bearing
+
+                    RotateAnimation(lastBearing, bearing,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f
+                    ).apply {
+                        fillAfter = true
+                        map_compass.startAnimation(this)
+                        lastBearing = bearing
+                    }
+
+                }
+            }
+        })
     }
 
     private fun initSetting() {
