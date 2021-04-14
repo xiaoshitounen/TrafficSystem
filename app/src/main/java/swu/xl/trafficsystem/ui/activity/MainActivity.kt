@@ -77,6 +77,7 @@ class MainActivity : BaseActivity() {
         startLocation()
         initCompass()
         initLocation()
+        initZoom()
         initSetting()
     }
 
@@ -105,10 +106,21 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    //处理自动定位
+    //处理自定义自动定位
     private fun initLocation() {
         map_location.setOnClickListener {
             startLocation()
+        }
+    }
+
+    //处理自定义缩放
+    private fun initZoom() {
+        map_zoom_add.setOnClickListener {
+            map.map.animateCamera(CameraUpdateFactory.zoomIn())
+        }
+
+        map_zoom_reduce.setOnClickListener {
+            map.map.animateCamera(CameraUpdateFactory.zoomOut())
         }
     }
 

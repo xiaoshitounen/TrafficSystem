@@ -51,6 +51,46 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="35dp"
+                android:layout_height="95dp"
+                android:background="@drawable/map_zoom_bg"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:layout_above="@+id/map_location"
+                android:layout_marginBottom="15dp"
+                >
+
+                <ImageView
+                    android:id="@+id/map_zoom_add"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/map_zoom_add"
+                    android:layout_centerHorizontal="true"
+                    >
+                </ImageView>
+
+                <View
+                    android:layout_width="18dp"
+                    android:layout_height="1dp"
+                    android:background="#C0C0C0"
+                    android:layout_centerInParent="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/map_zoom_reduce"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/map_zoom_reduce"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    >
+                </ImageView>
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </LinearLayout>
