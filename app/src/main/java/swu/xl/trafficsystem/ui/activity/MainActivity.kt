@@ -58,23 +58,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initMap() {
-        //设置是否显示内部建筑
-        map.map.showIndoorMap(MapManager.getShowIndoorEnabled())
-        //设置是否显示路况
-        map.map.isTrafficEnabled = MapManager.getTrafficEnabled()
-        //设置默认地图图标
-        map.map.uiSettings.apply {
-            //缩放按钮
-            isZoomControlsEnabled = false
-            //指南按钮 使用自定义
-            isCompassEnabled = false
-            //定位按钮
-            isMyLocationButtonEnabled = false
-            //比例尺按钮
-            isScaleControlsEnabled = MapManager.getScaleEnabled()
-            //logo按钮
-            logoPosition = MapManager.getLogoPosition()
-        }
         startLocation()
         initCompass()
         initLayer()
@@ -135,6 +118,28 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initSetting() {
+        //设置是否显示内部建筑
+        map.map.showIndoorMap(MapManager.getShowIndoorEnabled())
+        //设置是否显示路况
+        map.map.isTrafficEnabled = MapManager.getTrafficEnabled()
+        //设置默认地图图标
+        map.map.uiSettings.apply {
+            //缩放按钮
+            isZoomControlsEnabled = false
+            //指南按钮 使用自定义
+            isCompassEnabled = false
+            //定位按钮
+            isMyLocationButtonEnabled = false
+            //比例尺按钮
+            isScaleControlsEnabled = MapManager.getScaleEnabled()
+            //logo按钮
+            logoPosition = MapManager.getLogoPosition()
+        }
+
+        initSettingListener()
+    }
+
+    private fun initSettingListener() {
         map_normal.setOnClickListener {
             map.map.mapType = AMap.MAP_TYPE_NORMAL
         }
@@ -149,6 +154,10 @@ class MainActivity : BaseActivity() {
 
         map_traffic.setOnClickListener {
             map.map.isTrafficEnabled = !map.map.isTrafficEnabled
+        }
+
+        map_indoor.setOnClickListener {
+            map.map.showIndoorMap(true)
         }
     }
 
