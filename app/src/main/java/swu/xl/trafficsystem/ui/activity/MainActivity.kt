@@ -1,11 +1,13 @@
 package swu.xl.trafficsystem.ui.activity
 
+import android.animation.ObjectAnimator
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Gravity
+import android.view.View
 import android.view.View.*
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
@@ -33,6 +35,8 @@ class MainActivity : BaseActivity() {
     private lateinit var routeSearch: RouteSearch
     private lateinit var locationClient: AMapLocationClient
 
+    private var latitude = 0.0
+    private var longitude = 0.0
     private var lastBearing = 0F
 
     override fun getLayoutId() = R.layout.activity_main
@@ -84,16 +88,14 @@ class MainActivity : BaseActivity() {
             override fun onCameraChange(cameraPosition: CameraPosition?) {
                 cameraPosition?.let {
                     val bearing = 360 - it.bearing
-
-                    RotateAnimation(lastBearing, bearing,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f
-                    ).apply {
-                        fillAfter = true
-                        map_compass.startAnimation(this)
-                        lastBearing = bearing
+                    map_compass.post {
+                        map_compass.pivotX = (map_compass.width / 2).toFloat()
+                        map_compass.pivotY = (map_compass.height / 2).toFloat()
+                        ObjectAnimator.ofFloat(map_compass, "Rotation", lastBearing, bearing).apply {
+                            start()
+                            lastBearing = bearing
+                        }
                     }
-
                 }
             }
         })
@@ -103,6 +105,13 @@ class MainActivity : BaseActivity() {
     private fun initLocation() {
         map_location.setOnClickListener {
             startLocation()
+        }
+
+        map_location.setOnLongClickListener {
+            map.map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
+                LatLng(latitude, longitude), 17F, 180F, 0F
+            )))
+            true
         }
     }
 
@@ -119,9 +128,9 @@ class MainActivity : BaseActivity() {
 
     private fun initSetting() {
         //设置是否显示内部建筑
-        map.map.showIndoorMap(MapManager.getShowIndoorEnabled())
+        map.map.showIndoorMap(true)
         //设置是否显示路况
-        map.map.isTrafficEnabled = MapManager.getTrafficEnabled()
+        map.map.isTrafficEnabled =true
         //设置默认地图图标
         map.map.uiSettings.apply {
             //缩放按钮
@@ -134,6 +143,24 @@ class MainActivity : BaseActivity() {
             isScaleControlsEnabled = MapManager.getScaleEnabled()
             //logo按钮
             logoPosition = MapManager.getLogoPosition()
+        }
+
+        //设置自定义setting的打开情况
+        MapManager.getCompassEnabled().also {
+            compass_switch.isChecked = it
+            map_compass.visibility = if (it) VISIBLE else INVISIBLE
+        }
+        MapManager.getScaleEnabled().also {
+            scale_switch.isChecked = it
+            map.map.uiSettings.isScaleControlsEnabled = it
+        }
+        MapManager.getZoomEnabled().also {
+            zoom_switch.isChecked = it
+            map_zoom.visibility = if (it) VISIBLE else INVISIBLE
+        }
+        MapManager.getLocationEnabled().also {
+            location_switch.isChecked = it
+            map_location.visibility = if (it) VISIBLE else INVISIBLE
         }
 
         initSettingListener()
@@ -159,19 +186,56 @@ class MainActivity : BaseActivity() {
         map_indoor.setOnClickListener {
             map.map.showIndoorMap(true)
         }
+
+        compass_switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                map_compass.visibility = View.VISIBLE
+            } else {
+                map_compass.visibility = View.INVISIBLE
+            }
+            MapManager.setCompassEnabled(isChecked)
+        }
+
+        scale_switch.setOnCheckedChangeListener { _, isChecked ->
+            map.map.uiSettings.isScaleControlsEnabled = isChecked
+            MapManager.setScaleEnabled(isChecked)
+        }
+
+        zoom_switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                map_zoom.visibility = View.VISIBLE
+            } else {
+                map_zoom.visibility = View.INVISIBLE
+            }
+            MapManager.setZoomEnabled(isChecked)
+        }
+
+        location_switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                map_location.visibility = View.VISIBLE
+            } else {
+                map_location.visibility = View.INVISIBLE
+            }
+            MapManager.setLocationEnabled(isChecked)
+        }
     }
 
     private fun startLocation() {
         locationClient = AMapLocationClient(this)
         locationClient.setLocationListener {
+            //保存经纬度
+            latitude = it.latitude
+            longitude = it.longitude
+
             //CameraPosition4个参数: 位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）
             map.map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
                 LatLng(it.latitude, it.longitude), 17F, 0F, 0F
             )))
             locationClient.stopLocation()
+            map.map.clear()
             map.map.addMarker(MarkerOptions()
                 .position(AMapUtil.convertToLatLng(LatLonPoint(it.latitude, it.longitude)))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.start)))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)))
         }
         locationClient.startLocation()
 

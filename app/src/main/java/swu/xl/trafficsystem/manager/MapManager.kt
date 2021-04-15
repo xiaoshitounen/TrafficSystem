@@ -1,45 +1,14 @@
 package swu.xl.trafficsystem.manager
 
-import com.amap.api.maps.AMap
 import com.amap.api.maps.AMapOptions
 import swu.xl.trafficsystem.store.TrafficSystemStore
 
 object MapManager {
-    private var mapType = AMap.MAP_TYPE_NORMAL
-    private var isShowIndoorEnabled = true
-    private var isTrafficEnabled = true
     private var isZoomEnabled = true
     private var isCompassEnabled = true
     private var isLocationEnabled = true
     private var isScaleEnabled = true
     private var logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_LEFT
-
-    /**
-     * MAP_TYPE_NAVI:导航地图
-     * MAP_TYPE_NIGHT:夜景地图
-     * MAP_TYPE_NORMAL白昼地图（即普通地图）
-     * MAP_TYPE_SATELLITE:卫星图
-     */
-    fun setMapType(type: Int) {
-        mapType = type
-        //TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_TYPE, type)
-    }
-
-    fun getMapType() = mapType
-
-    fun setShowIndoorEnabled(enable: Boolean) {
-        isShowIndoorEnabled = enable
-        TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_INDOOR, enable)
-    }
-
-    fun getShowIndoorEnabled() = isShowIndoorEnabled
-
-    fun setTrafficEnabled(enable: Boolean) {
-        isTrafficEnabled = enable
-        TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_TRAFFIC, enable)
-    }
-
-    fun getTrafficEnabled() = isTrafficEnabled
 
     fun setZoomEnabled(enable: Boolean) {
         isZoomEnabled = enable
@@ -53,21 +22,21 @@ object MapManager {
         TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_COMPASS, enable)
     }
 
-    fun getCompassEnabled() = isCompassEnabled
+    fun getCompassEnabled() = TrafficSystemStore.getBoolean(TrafficSystemStore.KEY_MAP_COMPASS)
 
     fun setLocationEnabled(enable: Boolean) {
         isLocationEnabled = enable
         TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_LOCATION, enable)
     }
 
-    fun getLocationEnabled() = isLocationEnabled
+    fun getLocationEnabled() = TrafficSystemStore.getBoolean(TrafficSystemStore.KEY_MAP_LOCATION)
 
     fun setScaleEnabled(enable: Boolean) {
         isScaleEnabled = enable
         TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_SCALE, enable)
     }
 
-    fun getScaleEnabled() = isScaleEnabled
+    fun getScaleEnabled() = TrafficSystemStore.getBoolean(TrafficSystemStore.KEY_MAP_SCALE)
 
     /**
      * AMapOptions.LOGO_POSITION_BOTTOM_LEFT:LOGO边缘MARGIN（左边）
@@ -82,5 +51,5 @@ object MapManager {
         TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_LOGO_POSITION, position)
     }
 
-    fun getLogoPosition() = logoPosition
+    fun getLogoPosition() = TrafficSystemStore.getInt(TrafficSystemStore.KEY_MAP_LOGO_POSITION)
 }
