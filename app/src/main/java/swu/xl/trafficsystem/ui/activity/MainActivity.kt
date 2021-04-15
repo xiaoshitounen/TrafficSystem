@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.Gravity
 import android.view.View.*
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
@@ -76,9 +77,18 @@ class MainActivity : BaseActivity() {
         }
         startLocation()
         initCompass()
-        initLocation()
+        initLayer()
         initZoom()
+        initLocation()
         initSetting()
+    }
+
+    //处理抽屉的展开
+    private fun initLayer() {
+        map_layer.setOnClickListener {
+            drawer.openDrawer(Gravity.RIGHT)
+            //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }
     }
 
     //处理自定义的指南针偏转
@@ -143,8 +153,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun startLocation() {
-        //drawer.openDrawer(Gravity.RIGHT)
-        //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         locationClient = AMapLocationClient(this)
         locationClient.setLocationListener {
             //CameraPosition4个参数: 位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）
