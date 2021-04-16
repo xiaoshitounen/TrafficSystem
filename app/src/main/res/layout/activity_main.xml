@@ -152,9 +152,11 @@
                 android:gravity="center"
                 >
                 <ImageView
+                    android:id="@+id/map_type_normal_icon"
                     android:layout_width="70dp"
                     android:layout_height="60dp"
                     android:src="@drawable/map_normal"
+                    android:background="@drawable/map_type_bg"
                     />
 
                 <TextView
@@ -178,9 +180,11 @@
                 android:gravity="center"
                 >
                 <ImageView
+                    android:id="@+id/map_type_satellite_icon"
                     android:layout_width="70dp"
                     android:layout_height="60dp"
                     android:src="@drawable/map_satellite"
+                    android:background="@drawable/map_type_bg"
                     />
 
                 <TextView
@@ -204,9 +208,11 @@
                 android:gravity="center"
                 >
                 <ImageView
+                    android:id="@+id/map_type_night_icon"
                     android:layout_width="70dp"
                     android:layout_height="60dp"
                     android:src="@drawable/map_night"
+                    android:background="@drawable/map_type_bg"
                     />
 
                 <TextView

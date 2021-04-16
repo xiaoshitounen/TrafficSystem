@@ -9,6 +9,7 @@ import android.os.PersistableBundle
 import android.view.Gravity
 import android.view.View
 import android.view.View.*
+import android.widget.ImageView
 import android.widget.TextView
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.maps.AMap
@@ -43,6 +44,7 @@ class MainActivity : BaseActivity() {
     private var longitude = 0.0
     private var lastBearing = 0F
 
+    private var currentMapTypeIcon: ImageView? =null
     private var currentMapType: TextView? = null
     private var isTrafficEnable = false
     private var isIndoorEnable = false
@@ -292,22 +294,32 @@ class MainActivity : BaseActivity() {
         //修改地图类型
         map.map.mapType = type
         //上一个类型还原
+        currentMapTypeIcon?.setBackgroundResource(R.drawable.map_type_bg)
         currentMapType?.setTextColor(Color.parseColor(NORMAL_COLOR))
         //选中当前地图
         when (type) {
             AMap.MAP_TYPE_NORMAL -> {
+                //设置选中样式
+                map_type_normal_icon.setBackgroundResource(R.drawable.map_type_bg_select)
                 map_type_normal.setTextColor(Color.parseColor(SELECT_COLOR))
                 //设置新的选中地图类型
+                currentMapTypeIcon = map_type_normal_icon
                 currentMapType = map_type_normal
             }
             AMap.MAP_TYPE_SATELLITE -> {
+                //设置选中样式
+                map_type_satellite_icon.setBackgroundResource(R.drawable.map_type_bg_select)
                 map_type_satellite.setTextColor(Color.parseColor(SELECT_COLOR))
                 //设置新的选中地图类型
+                currentMapTypeIcon = map_type_satellite_icon
                 currentMapType = map_type_satellite
             }
             AMap.MAP_TYPE_NIGHT -> {
+                //设置选中样式
+                map_type_night_icon.setBackgroundResource(R.drawable.map_type_bg_select)
                 map_type_night.setTextColor(Color.parseColor(SELECT_COLOR))
                 //设置新的选中地图类型
+                currentMapTypeIcon = map_type_night_icon
                 currentMapType = map_type_night
             }
             else -> {
