@@ -9,8 +9,7 @@ import android.os.PersistableBundle
 import android.view.Gravity
 import android.view.View
 import android.view.View.*
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
+import android.widget.TextView
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
@@ -32,12 +31,19 @@ import swu.xl.trafficsystem.util.ToastUtil
 
 
 class MainActivity : BaseActivity() {
+    companion object {
+        private const val NORMAL_COLOR = "#707070"
+        private const val SELECT_COLOR = "#fa7832"
+    }
+
     private lateinit var routeSearch: RouteSearch
     private lateinit var locationClient: AMapLocationClient
 
     private var latitude = 0.0
     private var longitude = 0.0
     private var lastBearing = 0F
+
+    private var currentMapType: TextView? = null
 
     override fun getLayoutId() = R.layout.activity_main
 
@@ -128,9 +134,9 @@ class MainActivity : BaseActivity() {
 
     private fun initSetting() {
         //设置是否显示内部建筑
-        map.map.showIndoorMap(true)
+        map.map.showIndoorMap(false)
         //设置是否显示路况
-        map.map.isTrafficEnabled =true
+        map.map.isTrafficEnabled = false
         //设置默认地图图标
         map.map.uiSettings.apply {
             //缩放按钮
@@ -167,17 +173,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initSettingListener() {
-        map_normal.setOnClickListener {
-            map.map.mapType = AMap.MAP_TYPE_NORMAL
-        }
-
-        map_satellite.setOnClickListener {
-            map.map.mapType = AMap.MAP_TYPE_SATELLITE
-        }
-
-        map_night.setOnClickListener {
-            map.map.mapType = AMap.MAP_TYPE_NIGHT
-        }
+        //默认选中正常地图
+        changeMapType(AMap.MAP_TYPE_NORMAL)
+        //选择地图类型事件
+        map_normal.setOnClickListener { changeMapType(AMap.MAP_TYPE_NORMAL) }
+        map_satellite.setOnClickListener { changeMapType(AMap.MAP_TYPE_SATELLITE) }
+        map_night.setOnClickListener { changeMapType(AMap.MAP_TYPE_NIGHT) }
 
         map_traffic.setOnClickListener {
             map.map.isTrafficEnabled = !map.map.isTrafficEnabled
@@ -288,6 +289,38 @@ class MainActivity : BaseActivity() {
                 //do nothing
             }
         }
+    }
+
+    private fun changeMapType(type: Int) {
+        //修改地图类型
+        map.map.mapType = type
+        //上一个类型还原
+        currentMapType?.setTextColor(Color.parseColor(NORMAL_COLOR))
+        //选中当前地图
+        when (type) {
+            AMap.MAP_TYPE_NORMAL -> {
+                map_type_normal.setTextColor(Color.parseColor(SELECT_COLOR))
+                //设置新的选中地图类型
+                currentMapType = map_type_normal
+            }
+            AMap.MAP_TYPE_SATELLITE -> {
+                map_type_satellite.setTextColor(Color.parseColor(SELECT_COLOR))
+                //设置新的选中地图类型
+                currentMapType = map_type_satellite
+            }
+            AMap.MAP_TYPE_NIGHT -> {
+                map_type_night.setTextColor(Color.parseColor(SELECT_COLOR))
+                //设置新的选中地图类型
+                currentMapType = map_type_night
+            }
+            else -> {
+                //do nothing
+            }
+        }
+    }
+
+    private fun changeMapEvent() {
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

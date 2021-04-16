@@ -158,10 +158,13 @@
                     />
 
                 <TextView
+                    android:id="@+id/map_type_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="标准地图"
                     android:textSize="12sp"
+                    android:textColor="#707070"
                     />
 
             </LinearLayout>
@@ -181,10 +184,13 @@
                     />
 
                 <TextView
+                    android:id="@+id/map_type_satellite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="卫星地图"
                     android:textSize="12sp"
+                    android:textColor="#707070"
                     />
 
             </LinearLayout>
@@ -204,10 +210,13 @@
                     />
 
                 <TextView
+                    android:id="@+id/map_type_night"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="夜间地图"
                     android:textSize="12sp"
+                    android:textColor="#707070"
                     />
 
             </LinearLayout>
@@ -244,7 +253,7 @@
                 <RelativeLayout
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/map_traffic_bg"
+                    android:background="@drawable/map_event_bg"
                     >
                     <ImageView
                         android:layout_width="30dp"
@@ -256,10 +265,13 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/map_event_traffic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="路况"
                     android:textSize="12sp"
+                    android:textColor="#707070"
                     />
 
             </LinearLayout>
@@ -275,7 +287,7 @@
                 <RelativeLayout
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/map_traffic_bg"
+                    android:background="@drawable/map_event_bg"
                     >
                     <ImageView
                         android:layout_width="30dp"
@@ -287,10 +299,13 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/map_event_indoor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="室内"
                     android:textSize="12sp"
+                    android:textColor="#707070"
                     />
 
             </LinearLayout>
