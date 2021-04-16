@@ -37,7 +37,6 @@ class MainActivity : BaseActivity() {
         private const val SELECT_COLOR = "#fa7832"
     }
 
-    private lateinit var routeSearch: RouteSearch
     private lateinit var locationClient: AMapLocationClient
 
     private var latitude = 0.0
@@ -48,6 +47,8 @@ class MainActivity : BaseActivity() {
     private var currentMapType: TextView? = null
     private var isTrafficEnable = false
     private var isIndoorEnable = false
+
+    private lateinit var routeSearch: RouteSearch
 
     override fun getLayoutId() = R.layout.activity_main
 
@@ -72,20 +73,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initMap() {
-        startLocation()
         initCompass()
         initLayer()
         initZoom()
         initLocation()
         initSetting()
-    }
-
-    //处理抽屉的展开
-    private fun initLayer() {
-        map_layer.setOnClickListener {
-            drawer.openDrawer(Gravity.RIGHT)
-            //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        }
+        startLocation()
     }
 
     //处理自定义的指南针偏转
@@ -111,17 +104,11 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    //处理自定义自动定位
-    private fun initLocation() {
-        map_location.setOnClickListener {
-            startLocation()
-        }
-
-        map_location.setOnLongClickListener {
-            map.map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
-                LatLng(latitude, longitude), 17F, 180F, 0F
-            )))
-            true
+    //处理右边抽屉
+    private fun initLayer() {
+        map_layer.setOnClickListener {
+            drawer.openDrawer(Gravity.RIGHT)
+            //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
     }
 
@@ -136,7 +123,29 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    //处理自定义定位
+    private fun initLocation() {
+        map_location.setOnClickListener {
+            startLocation()
+        }
+
+        map_location.setOnLongClickListener {
+            map.map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
+                LatLng(latitude, longitude), 17F, 180F, 0F
+            )))
+            true
+        }
+    }
+
+    //处理抽屉内的按钮
     private fun initSetting() {
+        initMapDefaultConfig()
+        initMapSelfConfig()
+        initMapSelfListener()
+    }
+
+    //高德地图默认配置修改
+    private fun initMapDefaultConfig() {
         //设置是否显示内部建筑
         map.map.showIndoorMap(false)
         //设置是否显示路况
@@ -154,29 +163,34 @@ class MainActivity : BaseActivity() {
             //logo按钮
             logoPosition = MapManager.getLogoPosition()
         }
+    }
 
-        //设置自定义setting的打开情况
+    //抽屉：自定义按钮的默认打开情况
+    private fun initMapSelfConfig() {
+        //设置自定义指南针的默认打开情况
         MapManager.getCompassEnabled().also {
             compass_switch.isChecked = it
             map_compass.visibility = if (it) VISIBLE else INVISIBLE
         }
+        //设置系统比例尺的默认打开情况
         MapManager.getScaleEnabled().also {
             scale_switch.isChecked = it
             map.map.uiSettings.isScaleControlsEnabled = it
         }
+        //设置自定义缩放按钮的默认打开情况
         MapManager.getZoomEnabled().also {
             zoom_switch.isChecked = it
             map_zoom.visibility = if (it) VISIBLE else INVISIBLE
         }
+        //设置自定义定位按钮的默认打开情况
         MapManager.getLocationEnabled().also {
             location_switch.isChecked = it
             map_location.visibility = if (it) VISIBLE else INVISIBLE
         }
-
-        initSettingListener()
     }
 
-    private fun initSettingListener() {
+    //抽屉：自定义按钮的事件监听
+    private fun initMapSelfListener() {
         //地图类型
         changeMapType(AMap.MAP_TYPE_NORMAL)
         map_normal.setOnClickListener { changeMapType(AMap.MAP_TYPE_NORMAL) }
@@ -185,41 +199,95 @@ class MainActivity : BaseActivity() {
         //事件
         map_traffic.setOnClickListener { modifyMapEventTraffic() }
         map_indoor.setOnClickListener { modifyMapEventIndoor() }
-
         //设置
         compass_switch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                map_compass.visibility = View.VISIBLE
-            } else {
-                map_compass.visibility = View.INVISIBLE
-            }
+            map_compass.visibility = if (isChecked) VISIBLE else INVISIBLE
             MapManager.setCompassEnabled(isChecked)
         }
-
         scale_switch.setOnCheckedChangeListener { _, isChecked ->
             map.map.uiSettings.isScaleControlsEnabled = isChecked
             MapManager.setScaleEnabled(isChecked)
         }
-
         zoom_switch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                map_zoom.visibility = View.VISIBLE
-            } else {
-                map_zoom.visibility = View.INVISIBLE
-            }
+            map_zoom.visibility = if (isChecked) VISIBLE else INVISIBLE
             MapManager.setZoomEnabled(isChecked)
         }
-
         location_switch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                map_location.visibility = View.VISIBLE
-            } else {
-                map_location.visibility = View.INVISIBLE
-            }
+            map_location.visibility = if (isChecked) VISIBLE else INVISIBLE
             MapManager.setLocationEnabled(isChecked)
         }
     }
 
+    //抽屉：地图类型点击处理
+    private fun changeMapType(type: Int) {
+        //修改地图类型
+        map.map.mapType = type
+        //上一个类型还原
+        currentMapTypeIcon?.setBackgroundResource(R.drawable.map_type_bg)
+        currentMapType?.setTextColor(Color.parseColor(NORMAL_COLOR))
+        //选中当前地图
+        when (type) {
+            AMap.MAP_TYPE_NORMAL -> {
+                //设置选中样式
+                map_type_normal_icon.setBackgroundResource(R.drawable.map_type_bg_select)
+                map_type_normal.setTextColor(Color.parseColor(SELECT_COLOR))
+                //设置新的选中地图类型
+                currentMapTypeIcon = map_type_normal_icon
+                currentMapType = map_type_normal
+            }
+            AMap.MAP_TYPE_SATELLITE -> {
+                //设置选中样式
+                map_type_satellite_icon.setBackgroundResource(R.drawable.map_type_bg_select)
+                map_type_satellite.setTextColor(Color.parseColor(SELECT_COLOR))
+                //设置新的选中地图类型
+                currentMapTypeIcon = map_type_satellite_icon
+                currentMapType = map_type_satellite
+            }
+            AMap.MAP_TYPE_NIGHT -> {
+                //设置选中样式
+                map_type_night_icon.setBackgroundResource(R.drawable.map_type_bg_select)
+                map_type_night.setTextColor(Color.parseColor(SELECT_COLOR))
+                //设置新的选中地图类型
+                currentMapTypeIcon = map_type_night_icon
+                currentMapType = map_type_night
+            }
+            else -> {
+                //do nothing
+            }
+        }
+    }
+
+    //抽屉：路况点击处理
+    private fun modifyMapEventTraffic() {
+        isTrafficEnable = !isTrafficEnable
+        if (isTrafficEnable) {
+            map_event_traffic_bg.setBackgroundResource(R.drawable.map_event_bg_select)
+            map_event_traffic_icon.setColorFilter(Color.parseColor(SELECT_COLOR))
+            map_event_traffic.setTextColor(Color.parseColor(SELECT_COLOR))
+        } else {
+            map_event_traffic_bg.setBackgroundResource(R.drawable.map_event_bg)
+            map_event_traffic_icon.setColorFilter(Color.parseColor(NORMAL_COLOR))
+            map_event_traffic.setTextColor(Color.parseColor(NORMAL_COLOR))
+        }
+        map.map.isTrafficEnabled = isTrafficEnable
+    }
+
+    //抽屉：内部建筑点击处理
+    private fun modifyMapEventIndoor() {
+        isIndoorEnable = !isIndoorEnable
+        if (isIndoorEnable) {
+            map_event_indoor_bg.setBackgroundResource(R.drawable.map_event_bg_select)
+            map_event_indoor_icon.setColorFilter(Color.parseColor(SELECT_COLOR))
+            map_event_indoor.setTextColor(Color.parseColor(SELECT_COLOR))
+        } else {
+            map_event_indoor_bg.setBackgroundResource(R.drawable.map_event_bg)
+            map_event_indoor_icon.setColorFilter(Color.parseColor(NORMAL_COLOR))
+            map_event_indoor.setTextColor(Color.parseColor(NORMAL_COLOR))
+        }
+        map.map.showIndoorMap(isIndoorEnable)
+    }
+
+    //开始定位、自动定位
     private fun startLocation() {
         locationClient = AMapLocationClient(this)
         locationClient.setLocationListener {
@@ -288,74 +356,6 @@ class MainActivity : BaseActivity() {
                 //do nothing
             }
         }
-    }
-
-    private fun changeMapType(type: Int) {
-        //修改地图类型
-        map.map.mapType = type
-        //上一个类型还原
-        currentMapTypeIcon?.setBackgroundResource(R.drawable.map_type_bg)
-        currentMapType?.setTextColor(Color.parseColor(NORMAL_COLOR))
-        //选中当前地图
-        when (type) {
-            AMap.MAP_TYPE_NORMAL -> {
-                //设置选中样式
-                map_type_normal_icon.setBackgroundResource(R.drawable.map_type_bg_select)
-                map_type_normal.setTextColor(Color.parseColor(SELECT_COLOR))
-                //设置新的选中地图类型
-                currentMapTypeIcon = map_type_normal_icon
-                currentMapType = map_type_normal
-            }
-            AMap.MAP_TYPE_SATELLITE -> {
-                //设置选中样式
-                map_type_satellite_icon.setBackgroundResource(R.drawable.map_type_bg_select)
-                map_type_satellite.setTextColor(Color.parseColor(SELECT_COLOR))
-                //设置新的选中地图类型
-                currentMapTypeIcon = map_type_satellite_icon
-                currentMapType = map_type_satellite
-            }
-            AMap.MAP_TYPE_NIGHT -> {
-                //设置选中样式
-                map_type_night_icon.setBackgroundResource(R.drawable.map_type_bg_select)
-                map_type_night.setTextColor(Color.parseColor(SELECT_COLOR))
-                //设置新的选中地图类型
-                currentMapTypeIcon = map_type_night_icon
-                currentMapType = map_type_night
-            }
-            else -> {
-                //do nothing
-            }
-        }
-    }
-
-    //修改是否显示路况
-    private fun modifyMapEventTraffic() {
-        isTrafficEnable = !isTrafficEnable
-        if (isTrafficEnable) {
-            map_event_traffic_bg.setBackgroundResource(R.drawable.map_event_bg_select)
-            map_event_traffic_icon.setColorFilter(Color.parseColor(SELECT_COLOR))
-            map_event_traffic.setTextColor(Color.parseColor(SELECT_COLOR))
-        } else {
-            map_event_traffic_bg.setBackgroundResource(R.drawable.map_event_bg)
-            map_event_traffic_icon.setColorFilter(Color.parseColor(NORMAL_COLOR))
-            map_event_traffic.setTextColor(Color.parseColor(NORMAL_COLOR))
-        }
-        map.map.isTrafficEnabled = isTrafficEnable
-    }
-
-    //修改是否显示内部建筑
-    private fun modifyMapEventIndoor() {
-        isIndoorEnable = !isIndoorEnable
-        if (isIndoorEnable) {
-            map_event_indoor_bg.setBackgroundResource(R.drawable.map_event_bg_select)
-            map_event_indoor_icon.setColorFilter(Color.parseColor(SELECT_COLOR))
-            map_event_indoor.setTextColor(Color.parseColor(SELECT_COLOR))
-        } else {
-            map_event_indoor_bg.setBackgroundResource(R.drawable.map_event_bg)
-            map_event_indoor_icon.setColorFilter(Color.parseColor(NORMAL_COLOR))
-            map_event_indoor.setTextColor(Color.parseColor(NORMAL_COLOR))
-        }
-        map.map.showIndoorMap(isIndoorEnable)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
