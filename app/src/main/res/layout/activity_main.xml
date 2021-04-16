@@ -251,11 +251,13 @@
                 android:gravity="center"
                 >
                 <RelativeLayout
+                    android:id="@+id/map_event_traffic_bg"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/map_event_bg"
                     >
                     <ImageView
+                        android:id="@+id/map_event_traffic_icon"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
@@ -285,11 +287,13 @@
                 android:gravity="center"
                 >
                 <RelativeLayout
+                    android:id="@+id/map_event_indoor_bg"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/map_event_bg"
                     >
                     <ImageView
+                        android:id="@+id/map_event_indoor_icon"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"

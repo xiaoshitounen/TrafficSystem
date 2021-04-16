@@ -44,6 +44,8 @@ class MainActivity : BaseActivity() {
     private var lastBearing = 0F
 
     private var currentMapType: TextView? = null
+    private var isTrafficEnable = false
+    private var isIndoorEnable = false
 
     override fun getLayoutId() = R.layout.activity_main
 
@@ -173,21 +175,16 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initSettingListener() {
-        //默认选中正常地图
+        //地图类型
         changeMapType(AMap.MAP_TYPE_NORMAL)
-        //选择地图类型事件
         map_normal.setOnClickListener { changeMapType(AMap.MAP_TYPE_NORMAL) }
         map_satellite.setOnClickListener { changeMapType(AMap.MAP_TYPE_SATELLITE) }
         map_night.setOnClickListener { changeMapType(AMap.MAP_TYPE_NIGHT) }
+        //事件
+        map_traffic.setOnClickListener { modifyMapEventTraffic() }
+        map_indoor.setOnClickListener { modifyMapEventIndoor() }
 
-        map_traffic.setOnClickListener {
-            map.map.isTrafficEnabled = !map.map.isTrafficEnabled
-        }
-
-        map_indoor.setOnClickListener {
-            map.map.showIndoorMap(true)
-        }
-
+        //设置
         compass_switch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 map_compass.visibility = View.VISIBLE
@@ -319,8 +316,34 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun changeMapEvent() {
+    //修改是否显示路况
+    private fun modifyMapEventTraffic() {
+        isTrafficEnable = !isTrafficEnable
+        if (isTrafficEnable) {
+            map_event_traffic_bg.setBackgroundResource(R.drawable.map_event_bg_select)
+            map_event_traffic_icon.setColorFilter(Color.parseColor(SELECT_COLOR))
+            map_event_traffic.setTextColor(Color.parseColor(SELECT_COLOR))
+        } else {
+            map_event_traffic_bg.setBackgroundResource(R.drawable.map_event_bg)
+            map_event_traffic_icon.setColorFilter(Color.parseColor(NORMAL_COLOR))
+            map_event_traffic.setTextColor(Color.parseColor(NORMAL_COLOR))
+        }
+        map.map.isTrafficEnabled = isTrafficEnable
+    }
 
+    //修改是否显示内部建筑
+    private fun modifyMapEventIndoor() {
+        isIndoorEnable = !isIndoorEnable
+        if (isIndoorEnable) {
+            map_event_indoor_bg.setBackgroundResource(R.drawable.map_event_bg_select)
+            map_event_indoor_icon.setColorFilter(Color.parseColor(SELECT_COLOR))
+            map_event_indoor.setTextColor(Color.parseColor(SELECT_COLOR))
+        } else {
+            map_event_indoor_bg.setBackgroundResource(R.drawable.map_event_bg)
+            map_event_indoor_icon.setColorFilter(Color.parseColor(NORMAL_COLOR))
+            map_event_indoor.setTextColor(Color.parseColor(NORMAL_COLOR))
+        }
+        map.map.showIndoorMap(isIndoorEnable)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
