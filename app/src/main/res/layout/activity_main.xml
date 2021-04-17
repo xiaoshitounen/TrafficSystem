@@ -1,697 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    tools:context=".ui.activity.MainActivity">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:background="@drawable/bottom_bar_bg"
         >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            >
-            <com.amap.api.maps.MapView
-                android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
-
-            <ImageView
-                android:id="@+id/map_compass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/map_compass"
-                android:layout_marginTop="25dp"
-                android:layout_marginStart="15dp"
-                />
-
-            <RelativeLayout
-                android:id="@+id/map_location"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/map_location_bg"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                >
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/map_location"
-                    android:layout_centerInParent="true"
-                    />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/map_zoom"
-                android:layout_width="35dp"
-                android:layout_height="95dp"
-                android:background="@drawable/map_zoom_bg"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="15dp"
-                android:layout_above="@+id/map_location"
-                android:layout_marginBottom="15dp"
-                >
-
-                <ImageView
-                    android:id="@+id/map_zoom_add"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/map_zoom_add"
-                    android:layout_centerHorizontal="true"
-                    >
-                </ImageView>
-
-                <View
-                    android:layout_width="18dp"
-                    android:layout_height="1dp"
-                    android:background="#C0C0C0"
-                    android:layout_centerInParent="true"
-                    />
-
-                <ImageView
-                    android:id="@+id/map_zoom_reduce"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/map_zoom_reduce"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
-                    >
-                </ImageView>
-
-            </RelativeLayout>
-            
-            <RelativeLayout
-                android:id="@+id/map_layer"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/map_layer_bg"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="25dp"
-                >
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/map_layer"
-                    android:layout_centerInParent="true"
-                    />
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="@android:color/white"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:text="查找公交、地铁"
-                    android:textColor="#7A7B7E"
-                    android:textSize="16sp"
-                    android:drawableLeft="@drawable/map_search"
-                    android:drawablePadding="5dp"
-                    android:background="@drawable/map_search_bg"
-                    android:gravity="center_vertical"
-                    />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:cardCornerRadius="8dp">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        >
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="10dp"
-                            android:layout_centerVertical="true"
-                            >
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/map_location_home"
-                                android:layout_gravity="center_vertical"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="设置家"
-                                android:layout_marginStart="10dp"
-                                android:layout_gravity="center_vertical"
-                                />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="20dp"
-                            android:background="#7A7B7E"
-                            android:layout_centerInParent="true"
-                            />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="10dp"
-                            android:layout_centerInParent="true"
-                            android:layout_alignParentEnd="true"
-                            >
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/map_location_work"
-                                android:layout_gravity="center_vertical"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="设置公司"
-                                android:layout_marginStart="10dp"
-                                android:layout_gravity="center_vertical"
-                                />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
-    <!--侧滑部分必须要放在下面，否则无法获取点击事件-->
-    <LinearLayout
-        android:paddingTop="40dp"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:orientation="vertical"
-        android:background="#F4F4F4"
-        tools:ignore="RtlHardcoded">
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/bottom_type_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="地图类型"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="15dp"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@android:color/white"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            >
-
-            <LinearLayout
-                android:id="@+id/map_normal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="60dp"
-                        android:padding="1dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/map_normal"
-                        />
-                    <ImageView
-                        android:id="@+id/map_type_normal_icon"
-                        android:layout_width="70dp"
-                        android:layout_height="60dp"
-                        android:scaleType="fitXY"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/map_type_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="标准地图"
-                    android:textSize="12sp"
-                    android:textColor="#707070"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/map_satellite"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="60dp"
-                        android:padding="1dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/map_satellite"
-                        />
-                    <ImageView
-                        android:id="@+id/map_type_satellite_icon"
-                        android:layout_width="70dp"
-                        android:layout_height="60dp"
-                        android:scaleType="fitXY"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/map_type_satellite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="卫星地图"
-                    android:textSize="12sp"
-                    android:textColor="#707070"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/map_night"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
-                    <ImageView
-                        android:layout_width="70dp"
-                        android:layout_height="60dp"
-                        android:padding="1dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/map_night"
-                        />
-                    <ImageView
-                        android:id="@+id/map_type_night_icon"
-                        android:layout_width="70dp"
-                        android:layout_height="60dp"
-                        android:scaleType="fitXY"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/map_type_night"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="夜间地图"
-                    android:textSize="12sp"
-                    android:textColor="#707070"
-                    />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="事件"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            >
-            <LinearLayout
-                android:id="@+id/map_traffic"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <RelativeLayout
-                    android:id="@+id/map_event_traffic_bg"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/map_event_bg"
-                    >
-                    <ImageView
-                        android:id="@+id/map_event_traffic_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/map_traffic"
-                        android:layout_centerInParent="true"
-                        />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/map_event_traffic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="路况"
-                    android:textSize="12sp"
-                    android:textColor="#707070"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/map_indoor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <RelativeLayout
-                    android:id="@+id/map_event_indoor_bg"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/map_event_bg"
-                    >
-                    <ImageView
-                        android:id="@+id/map_event_indoor_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/map_indoor"
-                        android:layout_centerInParent="true"
-                        />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/map_event_indoor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="室内"
-                    android:textSize="12sp"
-                    android:textColor="#707070"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <!--暂时什么都不做-->
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="设置"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="40dp"
             android:orientation="vertical"
             >
-
-            <RelativeLayout
+            <TextView
+                android:id="@+id/bottom_title_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="首页"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#7A7B7E"
+                android:layout_gravity="center"
+                />
+            <View
+                android:id="@+id/bottom_title_home_select"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    >
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/map_switch_icon"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="指南针"
-                        android:layout_marginStart="5dp"
-                        />
-
-                </LinearLayout>
-
-                <Switch
-                    android:id="@+id/compass_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="5dp"
-                    android:layout_centerVertical="true"
-                    android:thumb="@drawable/switch_ios_thumb"
-                    android:track="@drawable/switch_ios_track"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    >
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/map_switch_icon"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="比例尺"
-                        android:layout_marginStart="5dp"
-                        />
-
-                </LinearLayout>
-
-                <Switch
-                    android:id="@+id/scale_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="5dp"
-                    android:layout_centerVertical="true"
-                    android:thumb="@drawable/switch_ios_thumb"
-                    android:track="@drawable/switch_ios_track"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    >
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/map_switch_icon"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="图层缩放"
-                        android:layout_marginStart="5dp"
-                        />
-
-                </LinearLayout>
-
-                <Switch
-                    android:id="@+id/zoom_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="5dp"
-                    android:layout_centerVertical="true"
-                    android:thumb="@drawable/switch_ios_thumb"
-                    android:track="@drawable/switch_ios_track"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    >
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/map_switch_icon"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="地图定位"
-                        android:layout_marginStart="5dp"
-                        />
-
-                </LinearLayout>
-
-                <Switch
-                    android:id="@+id/location_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="5dp"
-                    android:layout_centerVertical="true"
-                    android:thumb="@drawable/switch_ios_thumb"
-                    android:track="@drawable/switch_ios_track"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/map_logo_position"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true"
-                    >
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/map_switch_icon"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="logo位置"
-                        android:layout_marginStart="5dp"
-                        />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/map_setting_row"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="7dp"
-                    android:layout_centerVertical="true"
-                    />
-
-            </RelativeLayout>
-
+                android:layout_height="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@color/circle_start"
+                />
         </LinearLayout>
 
-    </LinearLayout>
-</androidx.drawerlayout.widget.DrawerLayout>
+        <LinearLayout
+            android:id="@+id/bottom_type_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="40dp"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/bottom_title_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#7A7B7E"
+                android:layout_gravity="center"
+                />
+            <View
+                android:id="@+id/bottom_title_user_select"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@color/circle_start"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
