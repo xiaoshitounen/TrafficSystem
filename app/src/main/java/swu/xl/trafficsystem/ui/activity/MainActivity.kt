@@ -90,6 +90,7 @@ class MainActivity : BaseActivity() {
 
             override fun onCameraChange(cameraPosition: CameraPosition?) {
                 cameraPosition?.let {
+                    //指南针旋转
                     val bearing = 360 - it.bearing
                     map_compass.post {
                         map_compass.pivotX = (map_compass.width / 2).toFloat()
@@ -98,6 +99,11 @@ class MainActivity : BaseActivity() {
                             start()
                             lastBearing = bearing
                         }
+                    }
+
+                    //marker旋转
+                    map.map.mapScreenMarkers.forEach { marker ->
+                        marker.rotateAngle = it.bearing
                     }
                 }
             }
@@ -133,6 +139,10 @@ class MainActivity : BaseActivity() {
             map.map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(
                 LatLng(latitude, longitude), 17F, 180F, 0F
             )))
+            map.map.clear()
+            map.map.addMarker(MarkerOptions()
+                .position(AMapUtil.convertToLatLng(LatLonPoint(latitude, longitude)))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_3d)))
             true
         }
     }
