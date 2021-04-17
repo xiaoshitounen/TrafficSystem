@@ -3,6 +3,7 @@ package swu.xl.trafficsystem.ui.activity
 import android.animation.ObjectAnimator
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -244,7 +245,7 @@ class MainActivity : BaseActivity() {
         //修改地图类型
         map.map.mapType = type
         //上一个类型还原
-        currentMapTypeIcon?.setBackgroundResource(R.drawable.map_type_bg)
+        currentMapTypeIcon?.setBackgroundResource(0)
         currentMapType?.setTextColor(Color.parseColor(NORMAL_COLOR))
         //选中当前地图
         when (type) {

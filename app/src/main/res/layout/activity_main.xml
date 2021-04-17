@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    android:id="@+id/drawer"
+<androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity">
+    tools:context=".ui.activity.MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
             >
             <com.amap.api.maps.MapView
                 android:id="@+id/map"
@@ -114,6 +115,39 @@
 
         </RelativeLayout>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@android:color/white"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="查找公交、地铁"
+                    android:textColor="#7A7B7E"
+                    android:textSize="16sp"
+                    android:drawableLeft="@drawable/map_search"
+                    android:drawablePadding="5dp"
+                    android:background="@drawable/map_search_bg"
+                    android:gravity="center_vertical"
+                    />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
     <!--侧滑部分必须要放在下面，否则无法获取点击事件-->
@@ -152,13 +186,24 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 >
-                <ImageView
-                    android:id="@+id/map_type_normal_icon"
-                    android:layout_width="70dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/map_normal"
-                    android:background="@drawable/map_type_bg"
-                    />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:padding="1dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/map_normal"
+                        />
+                    <ImageView
+                        android:id="@+id/map_type_normal_icon"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:scaleType="fitXY"
+                        />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/map_type_normal"
@@ -180,13 +225,24 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 >
-                <ImageView
-                    android:id="@+id/map_type_satellite_icon"
-                    android:layout_width="70dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/map_satellite"
-                    android:background="@drawable/map_type_bg"
-                    />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:padding="1dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/map_satellite"
+                        />
+                    <ImageView
+                        android:id="@+id/map_type_satellite_icon"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:scaleType="fitXY"
+                        />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/map_type_satellite"
@@ -208,13 +264,24 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 >
-                <ImageView
-                    android:id="@+id/map_type_night_icon"
-                    android:layout_width="70dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/map_night"
-                    android:background="@drawable/map_type_bg"
-                    />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:padding="1dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/map_night"
+                        />
+                    <ImageView
+                        android:id="@+id/map_type_night_icon"
+                        android:layout_width="70dp"
+                        android:layout_height="60dp"
+                        android:scaleType="fitXY"
+                        />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/map_type_night"
