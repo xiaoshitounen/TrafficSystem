@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Gravity
-import android.view.View
 import android.view.View.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,13 +19,14 @@ import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.route.*
+import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_main.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.amap.AMapUtil
 import swu.xl.trafficsystem.amap.BusRouteHelper
 import swu.xl.trafficsystem.base.BaseActivity
 import swu.xl.trafficsystem.log.TrafficSystemLogger
-import swu.xl.trafficsystem.manager.MapManager
+import swu.xl.trafficsystem.manager.MapConfigManager
 import swu.xl.trafficsystem.util.PermissionUtil
 import swu.xl.trafficsystem.util.ToastUtil
 
@@ -77,7 +77,7 @@ class MainActivity : BaseActivity() {
         initLayer()
         initZoom()
         initLocation()
-        initSetting()
+        initConfig()
         startLocation()
     }
 
@@ -148,7 +148,7 @@ class MainActivity : BaseActivity() {
     }
 
     //处理抽屉内的按钮
-    private fun initSetting() {
+    private fun initConfig() {
         initMapDefaultConfig()
         initMapSelfConfig()
         initMapSelfListener()
@@ -169,31 +169,31 @@ class MainActivity : BaseActivity() {
             //定位按钮
             isMyLocationButtonEnabled = false
             //比例尺按钮
-            isScaleControlsEnabled = MapManager.getScaleEnabled()
+            isScaleControlsEnabled = MapConfigManager.getScaleEnabled()
             //logo按钮
-            logoPosition = MapManager.getLogoPosition()
+            logoPosition = MapConfigManager.getLogoPosition()
         }
     }
 
     //抽屉：自定义按钮的默认打开情况
     private fun initMapSelfConfig() {
         //设置自定义指南针的默认打开情况
-        MapManager.getCompassEnabled().also {
+        MapConfigManager.getCompassEnabled().also {
             compass_switch.isChecked = it
             map_compass.visibility = if (it) VISIBLE else INVISIBLE
         }
         //设置系统比例尺的默认打开情况
-        MapManager.getScaleEnabled().also {
+        MapConfigManager.getScaleEnabled().also {
             scale_switch.isChecked = it
             map.map.uiSettings.isScaleControlsEnabled = it
         }
         //设置自定义缩放按钮的默认打开情况
-        MapManager.getZoomEnabled().also {
+        MapConfigManager.getZoomEnabled().also {
             zoom_switch.isChecked = it
             map_zoom.visibility = if (it) VISIBLE else INVISIBLE
         }
         //设置自定义定位按钮的默认打开情况
-        MapManager.getLocationEnabled().also {
+        MapConfigManager.getLocationEnabled().also {
             location_switch.isChecked = it
             map_location.visibility = if (it) VISIBLE else INVISIBLE
         }
@@ -212,19 +212,30 @@ class MainActivity : BaseActivity() {
         //设置
         compass_switch.setOnCheckedChangeListener { _, isChecked ->
             map_compass.visibility = if (isChecked) VISIBLE else INVISIBLE
-            MapManager.setCompassEnabled(isChecked)
+            MapConfigManager.setCompassEnabled(isChecked)
         }
         scale_switch.setOnCheckedChangeListener { _, isChecked ->
             map.map.uiSettings.isScaleControlsEnabled = isChecked
-            MapManager.setScaleEnabled(isChecked)
+            MapConfigManager.setScaleEnabled(isChecked)
         }
         zoom_switch.setOnCheckedChangeListener { _, isChecked ->
             map_zoom.visibility = if (isChecked) VISIBLE else INVISIBLE
-            MapManager.setZoomEnabled(isChecked)
+            MapConfigManager.setZoomEnabled(isChecked)
         }
         location_switch.setOnCheckedChangeListener { _, isChecked ->
             map_location.visibility = if (isChecked) VISIBLE else INVISIBLE
-            MapManager.setLocationEnabled(isChecked)
+            MapConfigManager.setLocationEnabled(isChecked)
+        }
+        map_logo_position.setOnClickListener {
+            XPopup.Builder(this)
+                .isDestroyOnDismiss(true)
+                .asCenterList(
+                    "请选择Logo位置", MapConfigManager.getLogoPositionsDescriptions(),
+                    null, MapConfigManager.getIndexOfLogoPosition()
+                ) { position, _ ->
+                    MapConfigManager.setLogoPosition(position)
+                    map.map.uiSettings.logoPosition = MapConfigManager.getLogoPosition(position)
+                }.show()
         }
     }
 

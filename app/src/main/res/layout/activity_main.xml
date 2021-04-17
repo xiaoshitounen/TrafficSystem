@@ -517,6 +517,47 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/map_logo_position"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    >
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/map_switch_icon"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:text="logo位置"
+                        android:layout_marginStart="5dp"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/map_setting_row"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="7dp"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>

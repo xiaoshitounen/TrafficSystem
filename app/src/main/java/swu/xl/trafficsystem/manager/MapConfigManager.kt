@@ -3,7 +3,7 @@ package swu.xl.trafficsystem.manager
 import com.amap.api.maps.AMapOptions
 import swu.xl.trafficsystem.store.TrafficSystemStore
 
-object MapManager {
+object MapConfigManager {
     private var isZoomEnabled = true
     private var isCompassEnabled = true
     private var isLocationEnabled = true
@@ -39,7 +39,7 @@ object MapManager {
     fun getScaleEnabled() = TrafficSystemStore.getBoolean(TrafficSystemStore.KEY_MAP_SCALE)
 
     /**
-     * AMapOptions.LOGO_POSITION_BOTTOM_LEFT:LOGO边缘MARGIN（左边）
+     * AMapOptions.LOGO_MARGIN_LEFT:LOGO边缘MARGIN（左边）
      * AMapOptions.LOGO_MARGIN_BOTTOM:LOGO边缘MARGIN（底部）
      * AMapOptions.LOGO_MARGIN_RIGHT:LOGO边缘MARGIN（右边）
      * AMapOptions.LOGO_POSITION_BOTTOM_CENTER:Logo位置（地图底部居中）
@@ -47,9 +47,32 @@ object MapManager {
      * AMapOptions.LOGO_POSITION_BOTTOM_RIGHT:Logo位置（地图右下角）
      */
     fun setLogoPosition(position: Int) {
-        logoPosition = position
+        logoPosition = getLogoPosition(position)
         TrafficSystemStore.save(TrafficSystemStore.KEY_MAP_LOGO_POSITION, position)
     }
 
     fun getLogoPosition() = TrafficSystemStore.getInt(TrafficSystemStore.KEY_MAP_LOGO_POSITION)
+
+    fun getLogoPosition(position: Int): Int {
+        return when (position) {
+            0 -> AMapOptions.LOGO_POSITION_BOTTOM_LEFT
+            1 -> AMapOptions.LOGO_POSITION_BOTTOM_CENTER
+            2 -> AMapOptions.LOGO_POSITION_BOTTOM_RIGHT
+            else -> AMapOptions.LOGO_POSITION_BOTTOM_LEFT
+        }
+    }
+
+    fun getIndexOfLogoPosition(): Int {
+        return when (getLogoPosition()) {
+            AMapOptions.LOGO_POSITION_BOTTOM_LEFT -> 0
+            AMapOptions.LOGO_POSITION_BOTTOM_CENTER -> 1
+            AMapOptions.LOGO_POSITION_BOTTOM_RIGHT -> 2
+            else -> 0
+        }
+    }
+
+
+    fun getLogoPositionsDescriptions(): Array<String> {
+        return arrayOf("左下角", "底部居中", "右下角")
+    }
 }
