@@ -17,7 +17,6 @@ import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.route.*
 import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.PopupInfo
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import swu.xl.trafficsystem.R
@@ -33,6 +32,7 @@ import swu.xl.trafficsystem.thirdparty.xpop.CustomEditTextBottomPopup
 class HomeFragment: BaseFragment() {
     private lateinit var locationClient: AMapLocationClient
 
+    private var city = ""
     private var latitude = 0.0
     private var longitude = 0.0
     private var lastBearing = 0F
@@ -95,7 +95,7 @@ class HomeFragment: BaseFragment() {
                 .isThreeDrag(false)
                 .moveUpToKeyboard(false)
                 .autoOpenSoftInput(true)
-                .asCustom(CustomEditTextBottomPopup(activity!!))
+                .asCustom(CustomEditTextBottomPopup(activity!!, city))
                 .show()
         }
     }
@@ -335,6 +335,8 @@ class HomeFragment: BaseFragment() {
     private fun startLocation() {
         locationClient = AMapLocationClient(activity)
         locationClient.setLocationListener {
+            //保存城市信息
+            city = it.city
             //保存经纬度
             latitude = it.latitude
             longitude = it.longitude
