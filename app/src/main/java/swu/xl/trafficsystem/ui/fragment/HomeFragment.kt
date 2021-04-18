@@ -17,15 +17,18 @@ import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.route.*
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.PopupInfo
+import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.amap.AMapUtil
 import swu.xl.trafficsystem.amap.BusRouteHelper
 import swu.xl.trafficsystem.base.BaseFragment
-import swu.xl.trafficsystem.log.TrafficSystemLogger
-import swu.xl.trafficsystem.manager.MapConfigManager
 import swu.xl.trafficsystem.constant.Constant.NORMAL_COLOR
 import swu.xl.trafficsystem.constant.Constant.SELECT_COLOR
+import swu.xl.trafficsystem.log.TrafficSystemLogger
+import swu.xl.trafficsystem.manager.MapConfigManager
+import swu.xl.trafficsystem.thirdparty.xpop.CustomEditTextBottomPopup
 
 class HomeFragment: BaseFragment() {
     private lateinit var locationClient: AMapLocationClient
@@ -82,6 +85,19 @@ class HomeFragment: BaseFragment() {
         initLocation()
         initConfig()
         startLocation()
+        initLayout()
+    }
+
+    private fun initLayout() {
+        map_search_text.setOnClickListener {
+            XPopup.Builder(context)
+                .maxHeight(XPopupUtils.getAppHeight(context) - XPopupUtils.dp2px(context, 5F))
+                .isThreeDrag(false)
+                .moveUpToKeyboard(false)
+                .autoOpenSoftInput(true)
+                .asCustom(CustomEditTextBottomPopup(activity!!))
+                .show()
+        }
     }
 
     //处理自定义的指南针偏转

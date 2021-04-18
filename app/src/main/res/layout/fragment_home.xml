@@ -121,17 +121,29 @@
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="-10dp"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:paddingBottom="10dp"
                 >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:padding="2dp"
+                    android:src="@drawable/map_search_normal"
+                    android:layout_gravity="center_horizontal"
+                    />
+
                 <TextView
+                    android:id="@+id/map_search_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:text="查找公交、地铁"
