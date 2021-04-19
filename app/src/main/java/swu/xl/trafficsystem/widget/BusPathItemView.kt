@@ -18,6 +18,7 @@ class BusPathItemView : LinearLayout {
     }
 
     fun setBusPath(path: BusPath) {
+        
         text.text = AMapUtil.getBusPathTitle(path)
     }
 }

@@ -2,6 +2,9 @@ package swu.xl.trafficsystem.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amap.api.services.route.*
 import com.amap.api.services.route.RouteSearch.*
@@ -9,6 +12,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_route_plan.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.adapter.BusPathAdapter
+import swu.xl.trafficsystem.adapter.OnBusPathClickListener
+import swu.xl.trafficsystem.amap.AMapUtil
 import swu.xl.trafficsystem.base.BaseActivity
 import swu.xl.trafficsystem.log.TrafficSystemLogger
 import swu.xl.trafficsystem.manager.MapRouteManager
@@ -26,6 +31,18 @@ class RoutePlanActivity : BaseActivity() {
     private lateinit var routeSearch: RouteSearch
 
     override fun getLayoutId() = R.layout.activity_route_plan
+
+    override fun preInit() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    )
+            window.statusBarColor = Color.TRANSPARENT
+            window.navigationBarColor = Color.TRANSPARENT
+        }
+    }
 
     override fun initData() {
         routeSearch = RouteSearch(this)
@@ -80,6 +97,7 @@ class RoutePlanActivity : BaseActivity() {
 
 
     override fun initListener() {
+        back.setOnClickListener { finish() }
         routeSearch.setRouteSearchListener(object : OnBusRouteSearchListener() {
             override fun onBusRouteSearched(result: BusRouteResult?, errorCode: Int) {
                 if (errorCode == 1000) {
@@ -103,6 +121,22 @@ class RoutePlanActivity : BaseActivity() {
         bus_route_tab.addOnTabSelectedListener(object : OnTabSelectedListener() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 calculateBusRouteAsync(tab?.tag as Int)
+            }
+        })
+
+        adapter.addOnBusPathClickListener(object : OnBusPathClickListener {
+            override fun onBusPathClick(path: BusPath) {
+                TrafficSystemLogger.d("花费时间：${AMapUtil.getFriendlyTime(path.duration.toInt())}")
+                TrafficSystemLogger.d("步行距离：${AMapUtil.getFriendlyLength(path.walkDistance.toInt())}")
+                TrafficSystemLogger.d("总距离：${AMapUtil.getFriendlyLength(path.distance.toInt())}")
+                TrafficSystemLogger.d("公交站点图：${AMapUtil.getBusPathTitle(path)}")
+                var number = 0
+                path.steps.forEach {
+                    number += it.busLines.size
+                }
+                TrafficSystemLogger.d("公交站数：${number}个")
+                TrafficSystemLogger.d("花费金钱：${path.cost}元")
+                TrafficSystemLogger.d("上站点：${path.steps[0].busLines[0].departureBusStation.busStationName}")
             }
         })
     }

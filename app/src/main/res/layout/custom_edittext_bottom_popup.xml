@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/map_search_back"
+                    android:src="@drawable/map_back"
                     android:layout_centerVertical="true"
                     />
             </RelativeLayout>
