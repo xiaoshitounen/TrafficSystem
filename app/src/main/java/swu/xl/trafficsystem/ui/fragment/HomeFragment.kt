@@ -21,18 +21,17 @@ import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.amap.AMapUtil
-import swu.xl.trafficsystem.amap.BusRouteHelper
 import swu.xl.trafficsystem.base.BaseFragment
 import swu.xl.trafficsystem.constant.Constant.NORMAL_COLOR
 import swu.xl.trafficsystem.constant.Constant.SELECT_COLOR
-import swu.xl.trafficsystem.log.TrafficSystemLogger
 import swu.xl.trafficsystem.manager.MapConfigManager
+import swu.xl.trafficsystem.manager.MapRouteManager
+import swu.xl.trafficsystem.model.MapLocation
 import swu.xl.trafficsystem.thirdparty.xpop.CustomEditTextBottomPopup
 
 class HomeFragment: BaseFragment() {
     private lateinit var locationClient: AMapLocationClient
 
-    private var city = ""
     private var latitude = 0.0
     private var longitude = 0.0
     private var lastBearing = 0F
@@ -41,8 +40,6 @@ class HomeFragment: BaseFragment() {
     private var currentMapType: TextView? = null
     private var isTrafficEnable = false
     private var isIndoorEnable = false
-
-    private lateinit var routeSearch: RouteSearch
 
     override fun initView(): View {
         return View.inflate(context, R.layout.fragment_home, null)
@@ -95,7 +92,7 @@ class HomeFragment: BaseFragment() {
                 .isThreeDrag(false)
                 .moveUpToKeyboard(false)
                 .autoOpenSoftInput(true)
-                .asCustom(CustomEditTextBottomPopup(activity!!, city))
+                .asCustom(CustomEditTextBottomPopup(activity!!, MapRouteManager.city))
                 .show()
         }
     }
@@ -336,10 +333,12 @@ class HomeFragment: BaseFragment() {
         locationClient = AMapLocationClient(activity)
         locationClient.setLocationListener {
             //保存城市信息
-            city = it.city
+            MapRouteManager.city = it.city
             //保存经纬度
             latitude = it.latitude
             longitude = it.longitude
+            //保存当前位置
+            MapRouteManager.setCurrent(MapLocation(LatLonPoint(latitude, longitude), "当前位置"))
 
             //CameraPosition4个参数: 位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）
             map.map.animateCamera(
@@ -356,38 +355,5 @@ class HomeFragment: BaseFragment() {
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)))
         }
         locationClient.startLocation()
-
-        routeSearch = RouteSearch(activity)
-        routeSearch.setRouteSearchListener(object : RouteSearch.OnRouteSearchListener {
-            override fun onDriveRouteSearched(p0: DriveRouteResult?, p1: Int) {
-
-            }
-
-            override fun onBusRouteSearched(result: BusRouteResult?, errorCode: Int) {
-                if (errorCode == 1000) {
-                    if (result != null && result.paths != null && result.paths.size > 0) {
-                        //展示数据
-                        TrafficSystemLogger.d("${result.paths.size}")
-                    } else {
-                        //没有搜集到数据
-                        println("没有搜集到数据")
-                    }
-                } else {
-                    //发生错误
-                    print("xl-ddd 发生错误")
-                }
-            }
-
-            override fun onRideRouteSearched(p0: RideRouteResult?, p1: Int) {
-
-            }
-
-            override fun onWalkRouteSearched(p0: WalkRouteResult?, p1: Int) {
-
-            }
-        })
-
-        println("xl-ddd 计算方案")
-        routeSearch.calculateBusRouteAsyn(BusRouteHelper.searchBusRouteResult())
     }
 }

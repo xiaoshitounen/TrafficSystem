@@ -50,6 +50,8 @@
         </activity>
 
         <activity android:name=".ui.activity.MainActivity" />
+
+        <activity android:name=".ui.activity.RoutePlanActivity" />
     </application>
 
 </manifest>
