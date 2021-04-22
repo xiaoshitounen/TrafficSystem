@@ -103,7 +103,6 @@ class RoutePlanActivity : BaseActivity() {
                 if (errorCode == 1000) {
                     if (result != null && result.paths != null && result.paths.size > 0) {
                         //展示数据
-                        TrafficSystemLogger.d("${result.paths.size}")
                         adapter.setBusPath(result.paths)
                     } else {
                         //没有搜集到数据
@@ -126,17 +125,7 @@ class RoutePlanActivity : BaseActivity() {
 
         adapter.addOnBusPathClickListener(object : OnBusPathClickListener {
             override fun onBusPathClick(path: BusPath) {
-                TrafficSystemLogger.d("花费时间：${AMapUtil.getFriendlyTime(path.duration.toInt())}")
-                TrafficSystemLogger.d("步行距离：${AMapUtil.getFriendlyLength(path.walkDistance.toInt())}")
-                TrafficSystemLogger.d("总距离：${AMapUtil.getFriendlyLength(path.distance.toInt())}")
                 TrafficSystemLogger.d("公交站点图：${AMapUtil.getBusPathTitle(path)}")
-                var number = 0
-                path.steps.forEach {
-                    number += it.busLines.size
-                }
-                TrafficSystemLogger.d("公交站数：${number}个")
-                TrafficSystemLogger.d("花费金钱：${path.cost}元")
-                TrafficSystemLogger.d("上站点：${path.steps[0].busLines[0].departureBusStation.busStationName}")
             }
         })
     }

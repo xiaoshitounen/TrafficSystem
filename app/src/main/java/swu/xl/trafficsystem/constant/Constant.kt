@@ -15,4 +15,9 @@ object Constant {
     const val TIP_TYPE_HISTORY = 1
     @IntDef(TIP_TYPE_SEARCH, TIP_TYPE_HISTORY)
     annotation class TipType
+
+    const val STEP_TYPE_BUS = 0
+    const val STEP_TYPE_RAILWAY = 1
+    @IntDef(STEP_TYPE_BUS, STEP_TYPE_RAILWAY)
+    annotation class StepType
 }

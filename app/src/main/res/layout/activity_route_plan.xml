@@ -9,20 +9,21 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardElevation="5dp"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="40dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="10dp"
             android:background="@android:color/white"
             >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingTop="40dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
                 >
                 <ImageView
                     android:id="@+id/back"
@@ -111,15 +112,17 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/bus_route_tab"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 app:tabRippleColor="@null"
-                android:background="#ffffff"
                 app:tabPadding="0dp"
-                app:tabTextColor="#000000"
-                app:tabSelectedTextColor="@color/circle_start"
-                app:tabIndicatorHeight="0sp"
-                app:tabIndicatorFullWidth="true"
-                app:tabMode="scrollable"
+                app:tabTextColor="@color/color_normal"
+                app:tabSelectedTextColor="@color/color_select"
+                app:tabIndicatorHeight="3sp"
+                app:tabIndicatorColor="@color/color_select"
+                app:tabIndicatorFullWidth="false"
+                app:tabMode="auto"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -128,6 +131,7 @@
         android:id="@+id/bus_route_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         />
 
 </LinearLayout>

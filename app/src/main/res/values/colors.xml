@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="color_normal">#7A7B7E</color>
+    <color name="color_select">#fa7832</color>
+
     <!--splash-->
     <color name="circle_start">#fa7832</color>
     <color name="circle_end">#eb4438</color>

@@ -1,14 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    >
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/route_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:gravity="center_vertical"
+                    tools:text="51分钟"
+                    />
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/map_route_walk_distance"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="3dp"
+                    android:scaleType="fitXY"
+                    android:paddingTop="2dp"
+                    />
+                <TextView
+                    android:id="@+id/route_walk_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:gravity="center_vertical"
+                    tools:text="2.1公里"
+                    />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/route_step_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+
+                <TextView
+                    android:id="@+id/route_station_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/color_normal"
+                    android:gravity="center_vertical"
+                    tools:text="9站"
+                    />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/map_route_space"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/route_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/color_normal"
+                    android:gravity="center_vertical"
+                    tools:text="4元"
+                    />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/map_route_space"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/route_station_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/color_normal"
+                    android:gravity="center_vertical"
+                    tools:text="猎德（D口）进站"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

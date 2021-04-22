@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import kotlin.collections.EmptyList;
 import swu.xl.trafficsystem.R;
+import swu.xl.trafficsystem.adapter.CustomBusStep;
+import swu.xl.trafficsystem.constant.Constant;
 
 public class AMapUtil {
 	/**
@@ -210,6 +213,41 @@ public class AMapUtil {
 			}
 
 			return R.drawable.dir13;
+		}
+
+		public static List<CustomBusStep> getBusStepList(BusPath busPath) {
+		     List<CustomBusStep> paths = new ArrayList<>();
+			if (busPath == null) {
+				return paths;
+			}
+			List<BusStep> busSetps = busPath.getSteps();
+			if (busSetps == null) {
+				return paths;
+			}
+			for (BusStep busStep : busSetps) {
+				StringBuffer title = new StringBuffer();
+				if (busStep.getBusLines().size() > 0) {
+					for (RouteBusLineItem busline : busStep.getBusLines()) {
+						if (busline == null) {
+							continue;
+						}
+
+						String buslineName = getSimpleBusLineName(busline.getBusLineName());
+						title.append(buslineName);
+						title.append(" / ");
+					}
+//					RouteBusLineItem busline = busStep.getBusLines().get(0);
+
+					paths.add(new CustomBusStep(Constant.STEP_TYPE_BUS, title.substring(0, title.length() - 3)));
+				}
+				if (busStep.getRailway() != null) {
+					RouteRailwayItem railway = busStep.getRailway();
+					paths.add(new CustomBusStep(Constant.STEP_TYPE_RAILWAY, railway.getTrip()+"("+railway.getDeparturestop().getName()
+							+" - "+railway.getArrivalstop().getName()+")"));
+				}
+			}
+
+			return paths;
 		}
 		
 		public static String getBusPathTitle(BusPath busPath) {
