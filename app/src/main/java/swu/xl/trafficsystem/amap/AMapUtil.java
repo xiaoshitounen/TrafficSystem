@@ -24,6 +24,7 @@ import kotlin.collections.EmptyList;
 import swu.xl.trafficsystem.R;
 import swu.xl.trafficsystem.adapter.CustomBusStep;
 import swu.xl.trafficsystem.constant.Constant;
+import swu.xl.trafficsystem.log.TrafficSystemLogger;
 
 public class AMapUtil {
 	/**
@@ -237,11 +238,16 @@ public class AMapUtil {
 						title.append(" / ");
 					}
 //					RouteBusLineItem busline = busStep.getBusLines().get(0);
-
-					paths.add(new CustomBusStep(Constant.STEP_TYPE_BUS, title.substring(0, title.length() - 3)));
+					String step = title.substring(0, title.length() - 3);
+					if (step.contains("线")) {
+						paths.add(new CustomBusStep(Constant.STEP_TYPE_SUBWAY, step));
+					} else {
+						paths.add(new CustomBusStep(Constant.STEP_TYPE_BUS, step));
+					}
 				}
 				if (busStep.getRailway() != null) {
 					RouteRailwayItem railway = busStep.getRailway();
+					TrafficSystemLogger.INSTANCE.d("添加地铁");
 					paths.add(new CustomBusStep(Constant.STEP_TYPE_RAILWAY, railway.getTrip()+"("+railway.getDeparturestop().getName()
 							+" - "+railway.getArrivalstop().getName()+")"));
 				}

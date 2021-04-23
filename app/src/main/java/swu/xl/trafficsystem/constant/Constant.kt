@@ -17,7 +17,8 @@ object Constant {
     annotation class TipType
 
     const val STEP_TYPE_BUS = 0
-    const val STEP_TYPE_RAILWAY = 1
-    @IntDef(STEP_TYPE_BUS, STEP_TYPE_RAILWAY)
+    const val STEP_TYPE_SUBWAY = 1
+    const val STEP_TYPE_RAILWAY = 2
+    @IntDef(STEP_TYPE_BUS, STEP_TYPE_SUBWAY, STEP_TYPE_RAILWAY)
     annotation class StepType
 }
