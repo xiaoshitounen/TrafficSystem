@@ -52,6 +52,8 @@
         <activity android:name=".ui.activity.MainActivity" />
 
         <activity android:name=".ui.activity.RoutePlanActivity" />
+
+        <activity android:name=".thirdparty.other.BusRouteDetailActivity" />
     </application>
 
 </manifest>

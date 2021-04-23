@@ -13,10 +13,10 @@ import kotlinx.android.synthetic.main.activity_route_plan.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.adapter.BusPathAdapter
 import swu.xl.trafficsystem.adapter.OnBusPathClickListener
-import swu.xl.trafficsystem.amap.AMapUtil
 import swu.xl.trafficsystem.base.BaseActivity
 import swu.xl.trafficsystem.log.TrafficSystemLogger
 import swu.xl.trafficsystem.manager.MapRouteManager
+import swu.xl.trafficsystem.thirdparty.other.BusRouteDetailActivity
 import swu.xl.trafficsystem.util.ToastUtil
 
 class RoutePlanActivity : BaseActivity() {
@@ -95,7 +95,6 @@ class RoutePlanActivity : BaseActivity() {
         }
     }
 
-
     override fun initListener() {
         back.setOnClickListener { finish() }
         routeSearch.setRouteSearchListener(object : OnBusRouteSearchListener() {
@@ -104,6 +103,18 @@ class RoutePlanActivity : BaseActivity() {
                     if (result != null && result.paths != null && result.paths.size > 0) {
                         //展示数据
                         adapter.setBusPath(result.paths)
+                        adapter.addOnBusPathClickListener(object : OnBusPathClickListener {
+                            override fun onBusPathClick(path: BusPath) {
+                                val intent = Intent(
+                                    applicationContext,
+                                    BusRouteDetailActivity::class.java
+                                )
+                                intent.putExtra("bus_path", path)
+                                intent.putExtra("bus_result", result)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                            }
+                        })
                     } else {
                         //没有搜集到数据
                         TrafficSystemLogger.e("没有搜集到数据")
@@ -120,12 +131,6 @@ class RoutePlanActivity : BaseActivity() {
         bus_route_tab.addOnTabSelectedListener(object : OnTabSelectedListener() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 calculateBusRouteAsync(tab?.tag as Int)
-            }
-        })
-
-        adapter.addOnBusPathClickListener(object : OnBusPathClickListener {
-            override fun onBusPathClick(path: BusPath) {
-                TrafficSystemLogger.d("公交站点图：${AMapUtil.getBusPathTitle(path)}")
             }
         })
     }
