@@ -85,7 +85,7 @@ public class RouteOverlay {
 	 * @since V2.1.0
 	 */
 	protected BitmapDescriptor getStartBitmapDescriptor() {
-		return BitmapDescriptorFactory.fromResource(R.drawable.amap_start);
+		return BitmapDescriptorFactory.fromResource(R.drawable.route_overlay_start);
 	}
 	/**
 	 * 给终点Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
@@ -93,7 +93,7 @@ public class RouteOverlay {
 	 * @since V2.1.0
 	 */
 	protected BitmapDescriptor getEndBitmapDescriptor() {
-		return BitmapDescriptorFactory.fromResource(R.drawable.amap_end);
+		return BitmapDescriptorFactory.fromResource(R.drawable.route_overlay_end);
 	}
 	/**
 	 * 给公交Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
@@ -101,7 +101,7 @@ public class RouteOverlay {
 	 * @since V2.1.0
 	 */
 	protected BitmapDescriptor getBusBitmapDescriptor() {
-		return BitmapDescriptorFactory.fromResource(R.drawable.amap_bus);
+		return BitmapDescriptorFactory.fromResource(R.drawable.route_overlay_bus);
 	}
 	/**
 	 * 给步行Marker设置图标，并返回更换图标的图片。如不用默认图片，需要重写此方法。
@@ -109,7 +109,7 @@ public class RouteOverlay {
 	 * @since V2.1.0
 	 */
 	protected BitmapDescriptor getWalkBitmapDescriptor() {
-		return BitmapDescriptorFactory.fromResource(R.drawable.amap_man);
+		return BitmapDescriptorFactory.fromResource(R.drawable.route_overlay_walk);
 	}
 
 	protected BitmapDescriptor getDriveBitmapDescriptor() {

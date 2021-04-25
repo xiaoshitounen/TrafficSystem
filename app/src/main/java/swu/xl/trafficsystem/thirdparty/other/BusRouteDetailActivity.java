@@ -2,6 +2,8 @@ package swu.xl.trafficsystem.thirdparty.other;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -29,13 +31,21 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	private MapView mapView;
 	private BusPath mBuspath;
 	private BusRouteResult mBusRouteResult;
-	private TextView mTitle, mTitleBusRoute, mDesBusRoute;
+	private TextView mTitleBusRoute, mDesBusRoute;
 	private ListView mBusSegmentList;
 	private BusSegmentListAdapter mBusSegmentListAdapter;
-	private LinearLayout mBusMap, mBuspathview;
 	private BusRouteOverlay mBusrouteOverlay;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			getWindow().getDecorView().setSystemUiVisibility(
+					View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+					View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+					View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+			);
+			getWindow().setStatusBarColor(Color.TRANSPARENT);
+			getWindow().setNavigationBarColor(Color.TRANSPARENT);
+		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_route_detail);
 		mapView = (MapView) findViewById(R.id.route_map);
@@ -54,12 +64,10 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 
 	private void init() {
 		if (aMap == null) {
-			aMap = mapView.getMap();	
+			aMap = mapView.getMap();
+			aMap.getUiSettings().setZoomControlsEnabled(false);
 		}
 		registerListener();
-		
-		mTitle = (TextView) findViewById(R.id.title_center);
-		mTitle.setText("公交路线详情");
 		mTitleBusRoute = (TextView) findViewById(R.id.firstline);
 		mDesBusRoute = (TextView) findViewById(R.id.secondline);
 		String dur = AMapUtil.getFriendlyTime((int) mBuspath.getDuration());
@@ -68,10 +76,16 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 		int taxiCost = (int) mBusRouteResult.getTaxiCost();
 		mDesBusRoute.setText("打车约"+taxiCost+"元");
 		mDesBusRoute.setVisibility(View.VISIBLE);
-		mBusMap = (LinearLayout)findViewById(R.id.title_map);
-		mBusMap.setVisibility(View.VISIBLE);
-		mBuspathview = (LinearLayout)findViewById(R.id.bus_path);
 		configureListView();
+		initMap();
+	}
+
+	private void initMap() {
+		aMap.clear();// 清理地图上的所有覆盖物
+		mBusrouteOverlay = new BusRouteOverlay(this, aMap,
+				mBuspath, mBusRouteResult.getStartPos(),
+				mBusRouteResult.getTargetPos());
+		mBusrouteOverlay.removeFromMap();
 	}
 
 	private void registerListener() {
@@ -87,23 +101,6 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 		mBusSegmentListAdapter = new BusSegmentListAdapter(
 				this.getApplicationContext(), mBuspath.getSteps());
 		mBusSegmentList.setAdapter(mBusSegmentListAdapter);
-		
-	}
-	
-	public void onBackClick(View view) {
-		this.finish();
-	}
-	
-	public void onMapClick(View view) {
-		mBuspathview.setVisibility(View.GONE);
-		mBusMap.setVisibility(View.GONE);
-		mapView.setVisibility(View.VISIBLE);
-		aMap.clear();// 清理地图上的所有覆盖物
-		mBusrouteOverlay = new BusRouteOverlay(this, aMap,
-				mBuspath, mBusRouteResult.getStartPos(),
-				mBusRouteResult.getTargetPos());
-		mBusrouteOverlay.removeFromMap();
-
 	}
 
 	@Override
