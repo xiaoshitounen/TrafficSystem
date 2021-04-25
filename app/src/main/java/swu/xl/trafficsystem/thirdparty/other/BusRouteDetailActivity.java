@@ -31,7 +31,7 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	private MapView mapView;
 	private BusPath mBuspath;
 	private BusRouteResult mBusRouteResult;
-	private TextView mTitleBusRoute, mDesBusRoute;
+	private TextView mTitleBusRoute;
 	private ListView mBusSegmentList;
 	private BusSegmentListAdapter mBusSegmentListAdapter;
 	private BusRouteOverlay mBusrouteOverlay;
@@ -68,14 +68,16 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 			aMap.getUiSettings().setZoomControlsEnabled(false);
 		}
 		registerListener();
+		findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		mTitleBusRoute = (TextView) findViewById(R.id.firstline);
-		mDesBusRoute = (TextView) findViewById(R.id.secondline);
 		String dur = AMapUtil.getFriendlyTime((int) mBuspath.getDuration());
 		String dis = AMapUtil.getFriendlyLength((int) mBuspath.getDistance());
 		mTitleBusRoute.setText(dur + "(" + dis + ")");
-		int taxiCost = (int) mBusRouteResult.getTaxiCost();
-		mDesBusRoute.setText("打车约"+taxiCost+"元");
-		mDesBusRoute.setVisibility(View.VISIBLE);
 		configureListView();
 		initMap();
 	}

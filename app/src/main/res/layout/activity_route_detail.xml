@@ -5,18 +5,33 @@
     android:background="#efefef"
     android:orientation="vertical" >
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/route_map"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-    </com.amap.api.maps.MapView>
+        android:layout_weight="2"
+        >
+        <com.amap.api.maps.MapView
+            android:id="@+id/route_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/map_back_white"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:padding="5dp"
+            android:background="@drawable/map_back_white_bg"
+            />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/bus_path"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,18 +48,6 @@
                 android:singleLine="true"
                 android:textColor="#333333"
                 android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/secondline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/firstline"
-                android:layout_marginLeft="12dp"
-                android:gravity="right"
-                android:singleLine="true"
-                android:textColor="#999999"
-                android:textSize="13sp"
-                android:visibility="gone" />
         </LinearLayout>
 
         <ImageView
