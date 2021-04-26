@@ -119,7 +119,7 @@ public class BusSegmentListAdapter extends BaseAdapter {
 			return convertView;
 		} else {
 			if (item.isWalk() && item.getWalk() != null && item.getWalk().getDistance() > 0) {
-				holder.busDirIcon.setImageResource(R.drawable.dir13);
+				holder.busDirIcon.setImageResource(R.drawable.route_line_walk);
 				holder.busDirUp.setVisibility(View.VISIBLE);
 				holder.busDirDown.setVisibility(View.VISIBLE);
 				holder.busLineName.setText("步行"
@@ -129,27 +129,27 @@ public class BusSegmentListAdapter extends BaseAdapter {
 				return convertView;
 	
 			}else if (item.isBus() && item.getBusLines().size() > 0) {
-				holder.busDirIcon.setImageResource(R.drawable.dir14);
+				holder.busDirIcon.setImageResource(R.drawable.route_line_bus);
 				holder.busDirUp.setVisibility(View.VISIBLE);
 				holder.busDirDown.setVisibility(View.VISIBLE);
 				holder.busLineName.setText(item.getBusLines().get(0).getBusLineName());
 				holder.busStationNum.setVisibility(View.VISIBLE);
 				holder.busStationNum
-						.setText((item.getBusLines().get(0).getPassStationNum() + 1) + "站");
-				holder.busExpandImage.setVisibility(View.VISIBLE);
+						.setText("乘坐" + (item.getBusLines().get(0).getPassStationNum() + 1) + "站");
+				//holder.busExpandImage.setVisibility(View.VISIBLE);
 				ArrowClick arrowClick = new ArrowClick(holder, item);
 				holder.parent.setTag(position);
 				holder.parent.setOnClickListener(arrowClick);
 				return convertView;
 			} else if (item.isRailway() && item.getRailway() != null) {
-				holder.busDirIcon.setImageResource(R.drawable.dir16);
+				holder.busDirIcon.setImageResource(R.drawable.route_line_subway);
 				holder.busDirUp.setVisibility(View.VISIBLE);
 				holder.busDirDown.setVisibility(View.VISIBLE);
 				holder.busLineName.setText(item.getRailway().getName());
 				holder.busStationNum.setVisibility(View.VISIBLE);
 				holder.busStationNum
-						.setText((item.getRailway().getViastops().size() + 1) + "站");
-				holder.busExpandImage.setVisibility(View.VISIBLE);
+						.setText("乘坐" + (item.getRailway().getViastops().size() + 1) + "站");
+				//holder.busExpandImage.setVisibility(View.VISIBLE);
 				ArrowClick arrowClick = new ArrowClick(holder, item);
 				holder.parent.setTag(position);
 				holder.parent.setOnClickListener(arrowClick);

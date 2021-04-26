@@ -23,7 +23,7 @@
             android:layout_height="30dp"
             android:src="@drawable/map_back_white"
             android:layout_marginTop="40dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="15dp"
             android:padding="5dp"
             android:background="@drawable/map_back_white_bg"
             />
@@ -149,6 +149,7 @@
                 android:layout_height="match_parent"
                 android:cacheColorHint="#00000000"
                 android:divider="#00000000"
+                android:scrollbars="none"
                 android:fadingEdge="none"
                 android:fadingEdgeLength="0dp"
                 android:footerDividersEnabled="false"

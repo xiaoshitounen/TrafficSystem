@@ -15,7 +15,9 @@
             android:layout_width="13dp"
             android:layout_height="13dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/dir_station" />
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/route_line_station_bg" />
 
         <ImageView
             android:id="@+id/bus_dir_icon_up"
@@ -23,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/bus_dir_icon"
             android:layout_centerHorizontal="true"
-            android:background="#b6b6b6" />
+            android:background="#F3A769" />
 
         <ImageView
             android:id="@+id/bus_dir_icon_down"
@@ -31,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/bus_dir_icon"
             android:layout_centerHorizontal="true"
-            android:background="#b6b6b6" />
+            android:background="#F3A769" />
     </RelativeLayout>
 
     <TextView
@@ -42,6 +44,6 @@
         android:gravity="center_vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
-        android:textColor="#999999"
+        android:textColor="@android:color/black"
         android:textSize="13sp" />
 </LinearLayout>
