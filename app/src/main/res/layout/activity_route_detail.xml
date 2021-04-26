@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#efefef"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,46 +29,133 @@
             />
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e0e0e0"/>
+
     <LinearLayout
         android:id="@+id/bus_path"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:gravity="center_vertical"
-            android:padding="5dp"
-            android:background="@drawable/bg_bottom_bar"
-            android:orientation="vertical" >
-            <TextView
-                android:id="@+id/firstline"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginLeft="12dp"
-                android:singleLine="true"
-                android:textColor="#333333"
-                android:textSize="16sp" />
-        </LinearLayout>
 
-        <ImageView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#e0e0e0"/>
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-        <ListView
-            android:id="@+id/bus_segment_list"
+                <TextView
+                    android:id="@+id/route_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    tools:text="全程 25分钟"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_below="@id/route_time"
+                    android:layout_marginTop="5dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/route_walk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/color_normal"
+                        android:gravity="center_vertical"
+                        tools:text="共步行962米"
+                        />
+
+                    <ImageView
+                        android:layout_width="6dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/map_route_space"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/route_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/color_normal"
+                        android:gravity="center_vertical"
+                        tools:text="4元"
+                        />
+
+                    <ImageView
+                        android:layout_width="6dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/map_route_space"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/route_station_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/color_normal"
+                        android:gravity="center_vertical"
+                        tools:text="9站"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/route_line_love"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:src="@drawable/route_line_normal"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:cacheColorHint="#00000000"
-            android:divider="#00000000"
-            android:fadingEdge="none"
-            android:fadingEdgeLength="0dp"
-            android:footerDividersEnabled="false"
-            android:headerDividersEnabled="false"
-            android:listSelector="#00000000" >
-        </ListView>
+            android:layout_margin="10dp"
+            app:cardCornerRadius="8dp"
+            >
+            <ListView
+                android:id="@+id/bus_segment_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="#00000000"
+                android:divider="#00000000"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false"
+                android:listSelector="#00000000" >
+            </ListView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </LinearLayout>

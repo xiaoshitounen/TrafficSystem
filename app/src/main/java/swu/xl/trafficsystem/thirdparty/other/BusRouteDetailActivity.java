@@ -1,5 +1,6 @@
 package swu.xl.trafficsystem.thirdparty.other;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,7 +32,6 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	private MapView mapView;
 	private BusPath mBuspath;
 	private BusRouteResult mBusRouteResult;
-	private TextView mTitleBusRoute;
 	private ListView mBusSegmentList;
 	private BusSegmentListAdapter mBusSegmentListAdapter;
 	private BusRouteOverlay mBusrouteOverlay;
@@ -63,23 +63,44 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	}
 
 	private void init() {
+		initStaticView();
+		registerListener();
+		configureListView();
+		initMap();
+	}
+
+	@SuppressLint("SetTextI18n")
+	private void initStaticView() {
+		//地图
 		if (aMap == null) {
 			aMap = mapView.getMap();
 			aMap.getUiSettings().setZoomControlsEnabled(false);
 		}
-		registerListener();
+		//返回
 		findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
-		mTitleBusRoute = (TextView) findViewById(R.id.firstline);
-		String dur = AMapUtil.getFriendlyTime((int) mBuspath.getDuration());
-		String dis = AMapUtil.getFriendlyLength((int) mBuspath.getDistance());
-		mTitleBusRoute.setText(dur + "(" + dis + ")");
-		configureListView();
-		initMap();
+		//步行距离
+		TextView walk = findViewById(R.id.route_walk);
+		walk.setText("共步行" + AMapUtil.getFriendlyLength((int) mBuspath.getWalkDistance()));
+		//花费金钱
+		TextView cost = findViewById(R.id.route_cost);
+		cost.setText((int) mBuspath.getCost() + "元");
+		//站数
+		int number = 0;
+		for (int i = 0; i < mBuspath.getSteps().size(); i++) {
+			if (mBuspath.getSteps().get(i).getBusLines().size() != 0) {
+				number += mBuspath.getSteps().get(i).getBusLines().get(0).getPassStationNum() + 1;
+			}
+		}
+		TextView station = findViewById(R.id.route_station_number);
+		station.setText(number + "站");
+		//总耗时
+		TextView time = findViewById(R.id.route_time);
+		time.setText("全程 " + AMapUtil.getFriendlyTime((int) mBuspath.getDuration()));
 	}
 
 	private void initMap() {

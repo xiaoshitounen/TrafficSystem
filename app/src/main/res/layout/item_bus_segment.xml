@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:background="#ffffff" >
 
-    <ImageView
-        android:id="@+id/bus_seg_split_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginStart="50dp"
-        android:background="#e0e0e0"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/bus_seg_split_line"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginLeft="50dp"-->
+<!--        android:layout_marginStart="50dp"-->
+<!--        android:background="#e0e0e0"/>-->
 
     <RelativeLayout
         android:id="@+id/bus_route_direction"
