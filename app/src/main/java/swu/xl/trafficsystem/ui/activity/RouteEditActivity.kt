@@ -5,14 +5,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_route_edit.*
-import kotlinx.android.synthetic.main.activity_route_plan.*
-import kotlinx.android.synthetic.main.activity_route_plan.end
-import kotlinx.android.synthetic.main.activity_route_plan.start
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.base.BaseActivity
 import swu.xl.trafficsystem.manager.MapRouteManager
+import swu.xl.trafficsystem.thirdparty.other.MapChooseActivity
 
 class RouteEditActivity : BaseActivity() {
     companion object {
@@ -46,5 +44,11 @@ class RouteEditActivity : BaseActivity() {
         end_edit.isFocusable = true
         end_edit.isFocusableInTouchMode = true
         end_edit.requestFocus()
+
+        //返回
+        findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
+
+        //地图选点
+        map_choose.setOnClickListener { startActivity(Intent(this, MapChooseActivity::class.java)) }
     }
 }
