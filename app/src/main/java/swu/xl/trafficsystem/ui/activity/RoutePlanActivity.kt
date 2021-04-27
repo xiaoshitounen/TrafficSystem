@@ -49,6 +49,11 @@ class RoutePlanActivity : BaseActivity() {
         initTab()
         initPaths()
 
+        route_line_edit.setOnClickListener {
+            RouteEditActivity.start(this)
+            //淡入淡出
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
         MapRouteManager.getLine().also { line ->
             start.text = line.start.name
             end.text = line.end.name

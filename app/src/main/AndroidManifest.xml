@@ -54,6 +54,9 @@
         <activity android:name=".ui.activity.RoutePlanActivity" />
 
         <activity android:name=".thirdparty.other.BusRouteDetailActivity" />
+
+        <activity android:name=".ui.activity.RouteEditActivity"
+            android:windowSoftInputMode="stateVisible"/>
     </application>
 
 </manifest>
