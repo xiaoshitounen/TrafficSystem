@@ -2,7 +2,9 @@ package swu.xl.trafficsystem.thirdparty.other;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +35,7 @@ import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.animation.Animation;
 import com.amap.api.maps.model.animation.TranslateAnimation;
 import com.amap.api.services.core.AMapException;
@@ -52,6 +55,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import swu.xl.trafficsystem.R;
+import swu.xl.trafficsystem.constant.Constant;
+import swu.xl.trafficsystem.manager.MapRouteManager;
+import swu.xl.trafficsystem.model.MapLocation;
+import swu.xl.trafficsystem.ui.activity.RoutePlanActivity;
+
+import static com.amap.api.maps.model.BitmapDescriptorFactory.getContext;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_END;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_KEY;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_START;
 
 public class MapChooseActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, PoiSearch.OnPoiSearchListener { // Inputtips.InputtipsListener
@@ -65,6 +77,7 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     private OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
+    private MyLocationStyle myLocationStyle;
 
     private String[] items = {"住宅区", "学校", "楼宇", "商场" };
 
@@ -93,11 +106,25 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     private boolean isfirstinput = true;
     private PoiItem firstItem;
 
+    private int type = ROUTE_LINE_END;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            );
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_map_choose);
+
+        //获取类型
+        type = getIntent().getIntExtra(ROUTE_LINE_KEY, type);
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -113,6 +140,17 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
 
         listView = (ListView) findViewById(R.id.listview);
         searchResultAdapter = new SearchResultAdapter(MapChooseActivity.this);
+        searchResultAdapter.setOnFinishIconClick(new SearchResultAdapter.OnFinishIconClickListener() {
+            @Override
+            public void onFinishIconClick(MapLocation mapLocation) {
+                if (type == ROUTE_LINE_START) {
+                    MapRouteManager.INSTANCE.changeStartLocation(mapLocation);
+                }else {
+                    MapRouteManager.INSTANCE.changeEndLocation(mapLocation);
+                }
+                startRoutePlan();
+            }
+        });
         listView.setAdapter(searchResultAdapter);
 
         listView.setOnItemClickListener(onItemClickListener);
@@ -183,6 +221,10 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
         hideSoftKey(searchText);
     }
 
+    private void startRoutePlan() {
+        RoutePlanActivity.start(this);
+    }
+
     /**
      * 初始化
      */
@@ -227,6 +269,9 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
+        myLocationStyle = new MyLocationStyle();
+        myLocationStyle.showMyLocation(false);
+        aMap.setMyLocationStyle(myLocationStyle);
     }
 
     /**
@@ -467,9 +512,15 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     private void addMarkerInScreenCenter(LatLng locationLatLng) {
         LatLng latLng = aMap.getCameraPosition().target;
         Point screenPosition = aMap.getProjection().toScreenLocation(latLng);
+        int source = 0;
+        if (type == ROUTE_LINE_START) {
+            source = R.drawable.route_overlay_start;
+        } else {
+            source = R.drawable.route_overlay_end;
+        }
         locationMarker = aMap.addMarker(new MarkerOptions()
                 .anchor(0.5f,0.5f)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.route_overlay_end)));
+                .icon(BitmapDescriptorFactory.fromResource(source)));
         //设置Marker在屏幕上,不跟随地图移动
         locationMarker.setPositionByPixels(screenPosition.x,screenPosition.y);
         locationMarker.setZIndex(1);

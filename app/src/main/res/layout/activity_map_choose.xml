@@ -11,7 +11,8 @@
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:visibility="gone">
 
         <AutoCompleteTextView
             android:id="@+id/keyWord"
@@ -33,7 +34,7 @@
             android:singleLine="true"
             android:textColor="#000000"
             android:textSize="16.0sp"
-            android:focusable="true"/>
+            android:focusable="true" />
 
 
         <Button
@@ -45,12 +46,11 @@
             android:visibility="gone"/>
     </LinearLayout>
 
-
-
     <com.amap.api.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="220dp" />
+        android:layout_height="220dp"
+        />
 
     <swu.xl.trafficsystem.thirdparty.other.SegmentedGroup
         xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"

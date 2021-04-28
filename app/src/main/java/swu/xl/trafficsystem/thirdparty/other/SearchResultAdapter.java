@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import swu.xl.trafficsystem.R;
+import swu.xl.trafficsystem.model.MapLocation;
+import swu.xl.trafficsystem.util.ToastUtil;
 
 /**
  * 包名： com.amap.searchdemo
@@ -32,6 +34,12 @@ public class SearchResultAdapter extends BaseAdapter {
     private Context context;
 
     private int selectedPosition = 0;
+
+    private OnFinishIconClickListener listener;
+
+    public void setOnFinishIconClick(OnFinishIconClickListener listener) {
+        this.listener = listener;
+    }
 
     public SearchResultAdapter(Context context) {
         this.context = context;
@@ -101,13 +109,25 @@ public class SearchResultAdapter extends BaseAdapter {
             if (position >= data.size())
                 return;
 
-            PoiItem poiItem = data.get(position);
+            final PoiItem poiItem = data.get(position);
 
             textTitle.setText(poiItem.getTitle());
             textSubTitle.setText(poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
 
             imageCheck.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
+            imageCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onFinishIconClick(new MapLocation(poiItem.getLatLonPoint(), poiItem.getTitle()));
+                    }
+                }
+            });
             textSubTitle.setVisibility((position == 0 && poiItem.getPoiId().equals("regeo")) ? View.GONE : View.VISIBLE);
         }
+    }
+
+    interface OnFinishIconClickListener {
+        void onFinishIconClick(MapLocation mapLocation);
     }
 }

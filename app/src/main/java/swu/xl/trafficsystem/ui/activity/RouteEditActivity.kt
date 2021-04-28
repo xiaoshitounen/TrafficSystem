@@ -9,6 +9,10 @@ import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_route_edit.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.base.BaseActivity
+import swu.xl.trafficsystem.constant.Constant
+import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_END
+import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_KEY
+import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_START
 import swu.xl.trafficsystem.manager.MapRouteManager
 import swu.xl.trafficsystem.thirdparty.other.MapChooseActivity
 
@@ -49,6 +53,16 @@ class RouteEditActivity : BaseActivity() {
         findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
 
         //地图选点
-        map_choose.setOnClickListener { startActivity(Intent(this, MapChooseActivity::class.java)) }
+        map_choose.setOnClickListener {
+            startActivity(Intent(this, MapChooseActivity::class.java).apply {
+                if (start_edit.hasFocus()) {
+                    putExtra(ROUTE_LINE_KEY, ROUTE_LINE_START)
+                }
+
+                if (end_edit.hasFocus()) {
+                    putExtra(ROUTE_LINE_KEY, ROUTE_LINE_END)
+                }
+            })
+        }
     }
 }
