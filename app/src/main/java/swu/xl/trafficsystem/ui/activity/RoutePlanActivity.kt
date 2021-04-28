@@ -62,6 +62,14 @@ class RoutePlanActivity : BaseActivity() {
         calculateBusRouteAsync(BUS_DEFAULT)
     }
 
+    override fun onResume() {
+        super.onResume()
+        MapRouteManager.getLine().also { line ->
+            start.text = line.start.name
+            end.text = line.end.name
+        }
+    }
+
     private fun initTab() {
         val tabList = mutableListOf<TabLayout.Tab>().apply {
             add(bus_route_tab.newTab().setText("最快捷").apply { tag = BUS_DEFAULT })
