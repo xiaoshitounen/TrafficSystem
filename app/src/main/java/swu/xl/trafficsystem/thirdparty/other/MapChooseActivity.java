@@ -55,12 +55,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import swu.xl.trafficsystem.R;
-import swu.xl.trafficsystem.constant.Constant;
 import swu.xl.trafficsystem.manager.MapRouteManager;
 import swu.xl.trafficsystem.model.MapLocation;
 import swu.xl.trafficsystem.ui.activity.RoutePlanActivity;
 
-import static com.amap.api.maps.model.BitmapDescriptorFactory.getContext;
 import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_END;
 import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_KEY;
 import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_START;

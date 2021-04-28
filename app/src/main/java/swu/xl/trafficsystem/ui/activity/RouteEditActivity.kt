@@ -9,7 +9,6 @@ import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_route_edit.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.base.BaseActivity
-import swu.xl.trafficsystem.constant.Constant
 import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_END
 import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_KEY
 import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_START
@@ -50,7 +49,7 @@ class RouteEditActivity : BaseActivity() {
         end_edit.requestFocus()
 
         //返回
-        findViewById<ImageView>(R.id.back).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.back).setOnClickListener { back() }
 
         //地图选点
         map_choose.setOnClickListener {
@@ -64,5 +63,16 @@ class RouteEditActivity : BaseActivity() {
                 }
             })
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        back()
+    }
+
+    fun back() {
+        finish()
+        //淡入淡出
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }

@@ -128,16 +128,29 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="8dp"
         >
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/map_choose"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/map_location_choose"
+                />
+
             <TextView
-                android:id="@+id/map_choose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="地图选点"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
