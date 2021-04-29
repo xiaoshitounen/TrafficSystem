@@ -39,12 +39,6 @@ class MainActivity : BaseActivity() {
         } else {
             PermissionUtil.requestLocation(this)
         }
-
-        AppExecutors.IO.execute {
-            TrafficSystemRoomBase.getRoomBase(this).historyDao().queryAll(0).forEach {
-                TrafficSystemLogger.d(it.tip?.district ?: "")
-            }
-        }
     }
 
     private fun init() {

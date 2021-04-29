@@ -2,6 +2,7 @@ package swu.xl.trafficsystem.thirdparty.xpop;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -18,11 +19,15 @@ import com.lxj.xpopup.core.BottomPopupView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import swu.xl.trafficsystem.R;
 import swu.xl.trafficsystem.adapter.OnTipClickListener;
 import swu.xl.trafficsystem.adapter.TipListAdapter;
+import swu.xl.trafficsystem.application.MyApplication;
 import swu.xl.trafficsystem.manager.MapRouteManager;
 import swu.xl.trafficsystem.model.MapLocation;
 import swu.xl.trafficsystem.sql.TrafficSystemRoomBase;
@@ -61,6 +66,7 @@ public class CustomEditTextBottomPopup extends BottomPopupView implements Inputt
         tipList = findViewById(R.id.map_tip_list);
         tipList.setLayoutManager(new LinearLayoutManager(getContext()));
         tipList.setAdapter(adapter);
+        doSearch(null);
     }
 
     @Override
@@ -95,6 +101,7 @@ public class CustomEditTextBottomPopup extends BottomPopupView implements Inputt
                 AppExecutors.getIO().execute(new Runnable() {
                     @Override
                     public void run() {
+                        //TODO 用户信息绑定
                         TrafficSystemRoomBase.Companion.getRoomBase(getContext()).historyDao().insert(
                                 new HistoryEntity(0, tip, 0)
                         );
@@ -105,12 +112,33 @@ public class CustomEditTextBottomPopup extends BottomPopupView implements Inputt
     }
 
     private void doSearch(String input) {
-        InputtipsQuery query = new InputtipsQuery(input, city);
-        //查询严格限制当前城市
-        query.setCityLimit(true);
-        Inputtips inputTips = new Inputtips(getContext(), query);
-        inputTips.setInputtipsListener(this);
-        inputTips.requestInputtipsAsyn();
+        if (TextUtils.isEmpty(input)) {
+            AppExecutors.getIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    List<HistoryEntity> histories = TrafficSystemRoomBase.Companion.getRoomBase(getContext()).historyDao().queryAll(0);
+                    final List<Tip> tips = new ArrayList<>();
+                    for (HistoryEntity history : histories) {
+                        tips.add(0, history.getTip());
+                    }
+
+                    ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
+                        @Override
+                        public Unit invoke() {
+                            adapter.setTips(tips);
+                            return null;
+                        }
+                    });
+                }
+            });
+        } else {
+            InputtipsQuery query = new InputtipsQuery(input, city);
+            //查询严格限制当前城市
+            query.setCityLimit(true);
+            Inputtips inputTips = new Inputtips(getContext(), query);
+            inputTips.setInputtipsListener(this);
+            inputTips.requestInputtipsAsyn();
+        }
     }
 
     @Override
