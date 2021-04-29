@@ -618,4 +618,8 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @Override
+    public void onBackPressed() {
+        //nop
+    }
 }

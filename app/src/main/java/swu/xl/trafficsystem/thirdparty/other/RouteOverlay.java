@@ -113,7 +113,7 @@ public class RouteOverlay {
 	}
 
 	protected BitmapDescriptor getDriveBitmapDescriptor() {
-		return BitmapDescriptorFactory.fromResource(R.drawable.amap_car);
+		return BitmapDescriptorFactory.fromResource(R.drawable.route_overlay_bus);
 	}
 
 	protected void addStartAndEndMarker() {

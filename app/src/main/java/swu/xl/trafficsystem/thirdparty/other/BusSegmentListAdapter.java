@@ -155,7 +155,7 @@ public class BusSegmentListAdapter extends BaseAdapter {
 				holder.parent.setOnClickListener(arrowClick);
 				return convertView;
 			} else if (item.isTaxi() && item.getTaxi() != null) {
-				holder.busDirIcon.setImageResource(R.drawable.dir14);
+				holder.busDirIcon.setImageResource(R.drawable.route_line_subway);
 				holder.busDirUp.setVisibility(View.VISIBLE);
 				holder.busDirDown.setVisibility(View.VISIBLE);
 				holder.busLineName.setText("打车到终点");

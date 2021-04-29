@@ -25,7 +25,11 @@ import swu.xl.trafficsystem.adapter.OnTipClickListener;
 import swu.xl.trafficsystem.adapter.TipListAdapter;
 import swu.xl.trafficsystem.manager.MapRouteManager;
 import swu.xl.trafficsystem.model.MapLocation;
+import swu.xl.trafficsystem.sql.TrafficSystemRoomBase;
+import swu.xl.trafficsystem.sql.entity.HistoryEntity;
 import swu.xl.trafficsystem.ui.activity.RoutePlanActivity;
+import swu.xl.trafficsystem.util.AppExecutors;
+import swu.xl.trafficsystem.util.ThreadUtil;
 
 /**
  * Description: 自定义带有输入框的Bottom弹窗
@@ -84,9 +88,18 @@ public class CustomEditTextBottomPopup extends BottomPopupView implements Inputt
 
         adapter.addOnTipClickListener(new OnTipClickListener() {
             @Override
-            public void onTipClick(@NotNull Tip tip) {
+            public void onTipClick(@NotNull final Tip tip) {
                 RoutePlanActivity.start(getContext());
                 MapRouteManager.INSTANCE.setLine(new MapLocation(tip.getPoint(), tip.getName()));
+                //存储数据库
+                AppExecutors.getIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        TrafficSystemRoomBase.Companion.getRoomBase(getContext()).historyDao().insert(
+                                new HistoryEntity(0, tip, 0)
+                        );
+                    }
+                });
             }
         });
     }

@@ -12,6 +12,9 @@ import swu.xl.trafficsystem.constant.Constant.BOTTOM_BAR_TYPE_HOME
 import swu.xl.trafficsystem.constant.Constant.BOTTOM_BAR_TYPE_USER
 import swu.xl.trafficsystem.constant.Constant.NORMAL_COLOR
 import swu.xl.trafficsystem.constant.Constant.SELECT_COLOR
+import swu.xl.trafficsystem.log.TrafficSystemLogger
+import swu.xl.trafficsystem.sql.TrafficSystemRoomBase
+import swu.xl.trafficsystem.util.AppExecutors
 import swu.xl.trafficsystem.util.FragmentUtil
 import swu.xl.trafficsystem.util.PermissionUtil
 
@@ -35,6 +38,12 @@ class MainActivity : BaseActivity() {
             init()
         } else {
             PermissionUtil.requestLocation(this)
+        }
+
+        AppExecutors.IO.execute {
+            TrafficSystemRoomBase.getRoomBase(this).historyDao().queryAll(0).forEach {
+                TrafficSystemLogger.d(it.tip?.district ?: "")
+            }
         }
     }
 

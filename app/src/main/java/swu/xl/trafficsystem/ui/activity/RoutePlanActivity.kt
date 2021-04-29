@@ -68,6 +68,7 @@ class RoutePlanActivity : BaseActivity() {
             start.text = line.start.name
             end.text = line.end.name
         }
+        calculateBusRouteAsync(BUS_DEFAULT)
     }
 
     private fun initTab() {
