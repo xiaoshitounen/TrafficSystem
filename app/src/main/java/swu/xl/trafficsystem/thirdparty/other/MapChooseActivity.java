@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -55,13 +56,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import swu.xl.trafficsystem.R;
+import swu.xl.trafficsystem.constant.Constant.RoutePointType;
 import swu.xl.trafficsystem.manager.MapRouteManager;
 import swu.xl.trafficsystem.model.MapLocation;
 import swu.xl.trafficsystem.ui.activity.RoutePlanActivity;
 
-import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_END;
-import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_KEY;
-import static swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_START;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_COMPANY;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_END;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_HOME;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_KEY;
+import static swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_START;
 
 public class MapChooseActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener, GeocodeSearch.OnGeocodeSearchListener, PoiSearch.OnPoiSearchListener { // Inputtips.InputtipsListener
@@ -104,7 +108,10 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     private boolean isfirstinput = true;
     private PoiItem firstItem;
 
-    private int type = ROUTE_LINE_END;
+    @RoutePointType
+    private int type = ROUTE_POINT_END;
+
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +129,7 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
         setContentView(R.layout.activity_map_choose);
 
         //获取类型
-        type = getIntent().getIntExtra(ROUTE_LINE_KEY, type);
+        type = getIntent().getIntExtra(ROUTE_POINT_KEY, type);
 
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -135,16 +142,31 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     }
 
     private void initView() {
-
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         listView = (ListView) findViewById(R.id.listview);
         searchResultAdapter = new SearchResultAdapter(MapChooseActivity.this);
         searchResultAdapter.setOnFinishIconClick(new SearchResultAdapter.OnFinishIconClickListener() {
             @Override
             public void onFinishIconClick(MapLocation mapLocation) {
-                if (type == ROUTE_LINE_START) {
-                    MapRouteManager.INSTANCE.changeStartLocation(mapLocation);
-                }else {
-                    MapRouteManager.INSTANCE.changeEndLocation(mapLocation);
+                switch (type) {
+                    case ROUTE_POINT_START:
+                        MapRouteManager.INSTANCE.changeStartLocation(mapLocation);
+                        break;
+                    case ROUTE_POINT_END:
+                        MapRouteManager.INSTANCE.changeEndLocation(mapLocation);
+                        break;
+                    case ROUTE_POINT_HOME:
+
+                        break;
+                    case ROUTE_POINT_COMPANY:
+
+                        break;
                 }
                 startRoutePlan();
             }
@@ -510,11 +532,20 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     private void addMarkerInScreenCenter(LatLng locationLatLng) {
         LatLng latLng = aMap.getCameraPosition().target;
         Point screenPosition = aMap.getProjection().toScreenLocation(latLng);
-        int source = 0;
-        if (type == ROUTE_LINE_START) {
-            source = R.drawable.route_overlay_start;
-        } else {
-            source = R.drawable.route_overlay_end;
+        int source = R.drawable.route_overlay_end;
+        switch (type) {
+            case ROUTE_POINT_START:
+                source = R.drawable.route_overlay_start;
+                break;
+            case ROUTE_POINT_END:
+                source = R.drawable.route_overlay_end;
+                break;
+            case ROUTE_POINT_HOME:
+                source = R.drawable.route_overlay_home;
+                break;
+            case ROUTE_POINT_COMPANY:
+                source = R.drawable.route_overlay_company;
+                break;
         }
         locationMarker = aMap.addMarker(new MarkerOptions()
                 .anchor(0.5f,0.5f)
@@ -616,10 +647,5 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    @Override
-    public void onBackPressed() {
-        //nop
     }
 }

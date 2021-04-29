@@ -22,9 +22,11 @@ object Constant {
     @IntDef(STEP_TYPE_BUS, STEP_TYPE_SUBWAY, STEP_TYPE_RAILWAY)
     annotation class StepType
 
-    const val ROUTE_LINE_START = 0
-    const val ROUTE_LINE_END = 1
-    @IntDef(ROUTE_LINE_START, ROUTE_LINE_END)
-    annotation class ROUTE_LINE_TYPE
-    const val ROUTE_LINE_KEY = "route_line_key"
+    const val ROUTE_POINT_START = 0
+    const val ROUTE_POINT_END = 1
+    const val ROUTE_POINT_HOME = 3
+    const val ROUTE_POINT_COMPANY = 4
+    @IntDef(ROUTE_POINT_START, ROUTE_POINT_END, ROUTE_POINT_HOME, ROUTE_POINT_COMPANY)
+    annotation class RoutePointType
+    const val ROUTE_POINT_KEY = "route_line_key"
 }

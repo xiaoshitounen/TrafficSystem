@@ -166,6 +166,7 @@
                         android:layout_margin="10dp"
                         >
                         <LinearLayout
+                            android:id="@+id/home_set"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -179,6 +180,7 @@
                                 android:layout_gravity="center_vertical"
                                 />
                             <TextView
+                                android:id="@+id/home_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="设置家"
@@ -195,6 +197,7 @@
                             />
 
                         <LinearLayout
+                            android:id="@+id/company_set"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -210,6 +213,7 @@
                                 android:layout_gravity="center_vertical"
                                 />
                             <TextView
+                                android:id="@+id/company_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="设置公司"

@@ -17,9 +17,9 @@ import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.adapter.OnTipClickListener
 import swu.xl.trafficsystem.adapter.TipListAdapter
 import swu.xl.trafficsystem.base.BaseActivity
-import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_END
-import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_KEY
-import swu.xl.trafficsystem.constant.Constant.ROUTE_LINE_START
+import swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_END
+import swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_KEY
+import swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_START
 import swu.xl.trafficsystem.manager.MapRouteManager
 import swu.xl.trafficsystem.model.MapLocation
 import swu.xl.trafficsystem.thirdparty.other.MapChooseActivity
@@ -61,11 +61,11 @@ class RouteEditActivity : BaseActivity(), Inputtips.InputtipsListener {
         map_choose.setOnClickListener {
             startActivity(Intent(this, MapChooseActivity::class.java).apply {
                 if (start_edit.hasFocus()) {
-                    putExtra(ROUTE_LINE_KEY, ROUTE_LINE_START)
+                    putExtra(ROUTE_POINT_KEY, ROUTE_POINT_START)
                 }
 
                 if (end_edit.hasFocus()) {
-                    putExtra(ROUTE_LINE_KEY, ROUTE_LINE_END)
+                    putExtra(ROUTE_POINT_KEY, ROUTE_POINT_END)
                 }
             })
         }

@@ -1,6 +1,7 @@
 package swu.xl.trafficsystem.ui.fragment
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -18,15 +19,18 @@ import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.route.*
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.util.XPopupUtils
+import kotlinx.android.synthetic.main.activity_route_edit.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.amap.AMapUtil
 import swu.xl.trafficsystem.base.BaseFragment
+import swu.xl.trafficsystem.constant.Constant
 import swu.xl.trafficsystem.constant.Constant.NORMAL_COLOR
 import swu.xl.trafficsystem.constant.Constant.SELECT_COLOR
 import swu.xl.trafficsystem.manager.MapConfigManager
 import swu.xl.trafficsystem.manager.MapRouteManager
 import swu.xl.trafficsystem.model.MapLocation
+import swu.xl.trafficsystem.thirdparty.other.MapChooseActivity
 import swu.xl.trafficsystem.thirdparty.xpop.CustomEditTextBottomPopup
 
 class HomeFragment: BaseFragment() {
@@ -73,6 +77,24 @@ class HomeFragment: BaseFragment() {
 
     override fun initData() {
         initMap()
+    }
+
+    override fun initListener() {
+        home_set.setOnClickListener {
+            activity?.let {
+                it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
+                    putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_HOME)
+                })
+            }
+        }
+
+        company_set.setOnClickListener {
+            activity?.let {
+                it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
+                    putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_COMPANY)
+                })
+            }
+        }
     }
 
     private fun initMap() {
