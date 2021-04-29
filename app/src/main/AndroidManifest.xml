@@ -60,6 +60,8 @@
             android:windowSoftInputMode="stateVisible"/>
 
         <activity android:name=".thirdparty.other.MapChooseActivity"/>
+
+        <activity android:name=".ui.activity.WebViewActivity" />
     </application>
 
 </manifest>

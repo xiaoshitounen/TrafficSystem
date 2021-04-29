@@ -58,4 +58,10 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.3"
     kapt "androidx.room:room-compiler:2.2.3"
     implementation "androidx.room:room-ktx:2.2.3"
+
+    //相册 依赖冲突
+    implementation 'com.github.HuanTanSheng:EasyPhotos:3.1.0'
+
+    //腾讯云对象存储
+    implementation 'com.tencent.qcloud:cosxml:5.6.0'
 }
