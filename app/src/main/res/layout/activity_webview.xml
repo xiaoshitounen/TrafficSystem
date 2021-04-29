@@ -4,9 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:leftType="textView"
+        titlebar:leftTextColor="@android:color/white"
+        titlebar:leftText="隐私政策"
+        titlebar:showBottomLine="true"
+        titlebar:statusBarColor="@color/color_select"
+        titlebar:titleBarColor="@color/color_select" />
+
     <WebView
         android:id="@+id/web_view"
-        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

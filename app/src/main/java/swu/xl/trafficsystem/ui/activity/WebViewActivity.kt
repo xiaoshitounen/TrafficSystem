@@ -26,18 +26,6 @@ class WebViewActivity : BaseActivity() {
         }
     }
 
-    override fun preInit() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = (
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    )
-            window.statusBarColor = Color.TRANSPARENT
-            window.navigationBarColor = Color.TRANSPARENT
-        }
-    }
-
     override fun getLayoutId() = R.layout.activity_webview
 
     @SuppressLint("SetJavaScriptEnabled")

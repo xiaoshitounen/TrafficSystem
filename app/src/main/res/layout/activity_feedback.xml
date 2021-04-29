@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:leftType="textView"
+        titlebar:leftTextColor="@android:color/white"
+        titlebar:leftText="意见反馈"
+        titlebar:showBottomLine="true"
+        titlebar:statusBarColor="@color/color_select"
+        titlebar:titleBarColor="@color/color_select" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback"
+            android:textColor="#444444"
+            />
+
+        <EditText
+            android:id="@+id/dec"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/feedback_edit_bg"
+            android:hint="请简要描述你要反馈的问题"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:cursorVisible="false"
+            android:layout_marginTop="4dp"
+            android:gravity="top"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            android:textColor="#444444"
+            android:layout_marginTop="20dp"
+            />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/feedback_edit_bg"
+            android:hint="请输入邮箱地址"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:cursorVisible="false"
+            android:layout_marginTop="4dp"
+            android:lines="1"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="联系方式"
+            android:layout_marginTop="20dp"
+            android:textColor="#444444"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/feedback_edit_bg"
+            android:textSize="12sp"
+            android:padding="10dp"
+            android:cursorVisible="false"
+            android:hint="QQ/微信"
+            android:layout_marginTop="4dp"
+            android:lines="1"
+            />
+
+        <TextView
+            android:id="@+id/push"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text="提 交"
+            android:background="@drawable/btn_bg"
+            android:textAlignment="center"
+            android:padding="10dp"
+            android:layout_marginTop="40dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

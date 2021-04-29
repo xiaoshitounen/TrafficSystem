@@ -4,6 +4,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.fragment_user.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.base.BaseFragment
+import swu.xl.trafficsystem.ui.activity.FeedBackActivity
 import swu.xl.trafficsystem.ui.activity.WebViewActivity
 
 class UserFragment: BaseFragment() {
@@ -15,6 +16,11 @@ class UserFragment: BaseFragment() {
         user_document.setOnClickListener {
             activity?.let {
                 WebViewActivity.loadURL(it, "https://cache.amap.com/h5/h5/publish/238/index.html")
+            }
+        }
+        user_feedback.setOnClickListener {
+            activity?.let {
+                FeedBackActivity.start(it)
             }
         }
     }

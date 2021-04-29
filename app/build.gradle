@@ -59,6 +59,9 @@ dependencies {
     kapt "androidx.room:room-compiler:2.2.3"
     implementation "androidx.room:room-ktx:2.2.3"
 
+    //标题栏
+    implementation 'com.wuhenzhizao:titlebar:1.2.0'
+
     //相册 依赖冲突
     implementation 'com.github.HuanTanSheng:EasyPhotos:3.1.0'
 

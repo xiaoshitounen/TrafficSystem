@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">TrafficSystem</string>
+    <string name="app_name">公交导航</string>
+    <string name="feedback">问题描述<font color='#ff6666'>*</font></string>
+    <string name="email">邮箱<font color='#ff6666'>*</font></string>
 </resources>
