@@ -116,6 +116,7 @@ public class CustomEditTextBottomPopup extends BottomPopupView implements Inputt
             AppExecutors.getIO().execute(new Runnable() {
                 @Override
                 public void run() {
+                    //TODO 添加用户信息
                     List<HistoryEntity> histories = TrafficSystemRoomBase.Companion.getRoomBase(getContext()).historyDao().queryAll(0);
                     final List<Tip> tips = new ArrayList<>();
                     for (HistoryEntity history : histories) {

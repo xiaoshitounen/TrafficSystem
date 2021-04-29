@@ -1,5 +1,6 @@
 package swu.xl.trafficsystem.ui.activity
 
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.view.View
@@ -17,6 +18,7 @@ import swu.xl.trafficsystem.sql.TrafficSystemRoomBase
 import swu.xl.trafficsystem.util.AppExecutors
 import swu.xl.trafficsystem.util.FragmentUtil
 import swu.xl.trafficsystem.util.PermissionUtil
+import swu.xl.trafficsystem.util.ToastUtil
 
 class MainActivity : BaseActivity() {
     override fun getLayoutId() = R.layout.activity_main
@@ -78,5 +80,22 @@ class MainActivity : BaseActivity() {
             commit()
         }
         true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            PermissionUtil.location_code -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    init()
+                } else {
+                    ToastUtil.toast("用户拒绝授予定位权限")
+                }
+            }
+            else -> {
+                //do nothing
+            }
+        }
     }
 }
