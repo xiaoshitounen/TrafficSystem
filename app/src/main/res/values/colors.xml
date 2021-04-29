@@ -10,4 +10,5 @@
     <!--splash-->
     <color name="circle_start">#fa7832</color>
     <color name="circle_end">#eb4438</color>
+    <color name="userColor">#555555</color>
 </resources>
