@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="EditTextStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#dddddd</item>
+        <item name="colorControlActivated">#dddddd</item>
+        <item name="android:textCursorDrawable">@drawable/map_edit_cursor</item>
+    </style>
+
 </resources>

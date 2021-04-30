@@ -64,6 +64,8 @@
         <activity android:name=".ui.activity.WebViewActivity" />
 
         <activity android:name=".ui.activity.FeedBackActivity" />
+
+        <activity android:name=".ui.activity.LoginActivity" />
     </application>
 
 </manifest>
