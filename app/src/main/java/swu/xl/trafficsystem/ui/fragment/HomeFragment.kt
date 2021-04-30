@@ -29,9 +29,12 @@ import swu.xl.trafficsystem.constant.Constant.NORMAL_COLOR
 import swu.xl.trafficsystem.constant.Constant.SELECT_COLOR
 import swu.xl.trafficsystem.manager.MapConfigManager
 import swu.xl.trafficsystem.manager.MapRouteManager
+import swu.xl.trafficsystem.manager.UserManager
 import swu.xl.trafficsystem.model.MapLocation
 import swu.xl.trafficsystem.thirdparty.other.MapChooseActivity
 import swu.xl.trafficsystem.thirdparty.xpop.CustomEditTextBottomPopup
+import swu.xl.trafficsystem.ui.activity.LoginActivity
+import swu.xl.trafficsystem.util.ToastUtil
 
 class HomeFragment: BaseFragment() {
     private lateinit var locationClient: AMapLocationClient
@@ -80,19 +83,27 @@ class HomeFragment: BaseFragment() {
     }
 
     override fun initListener() {
-        home_set.setOnClickListener {
-            activity?.let {
-                it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
-                    putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_HOME)
-                })
+        home_set.setOnClickListener { _ ->
+            if (UserManager.isUserLogin()) {
+                activity?.let {
+                    it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
+                        putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_HOME)
+                    })
+                }
+            } else {
+                ToastUtil.toast("请先登录")
             }
         }
 
-        company_set.setOnClickListener {
-            activity?.let {
-                it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
-                    putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_COMPANY)
-                })
+        company_set.setOnClickListener { _ ->
+            if (UserManager.isUserLogin()) {
+                activity?.let {
+                    it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
+                        putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_COMPANY)
+                    })
+                }
+            } else {
+                ToastUtil.toast("请先登录")
             }
         }
     }

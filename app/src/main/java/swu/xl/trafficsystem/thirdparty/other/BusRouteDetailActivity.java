@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +25,9 @@ import com.amap.api.services.route.BusRouteResult;
 
 import swu.xl.trafficsystem.R;
 import swu.xl.trafficsystem.amap.AMapUtil;
+import swu.xl.trafficsystem.constant.Constant;
+import swu.xl.trafficsystem.manager.UserManager;
+import swu.xl.trafficsystem.util.ToastUtil;
 
 public class BusRouteDetailActivity extends Activity implements OnMapLoadedListener,
 		OnMapClickListener, InfoWindowAdapter, OnInfoWindowClickListener, OnMarkerClickListener {
@@ -34,6 +38,8 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	private ListView mBusSegmentList;
 	private BusSegmentListAdapter mBusSegmentListAdapter;
 	private BusRouteOverlay mBusrouteOverlay;
+	private ImageView love;
+	private boolean hasLoved = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -48,6 +54,7 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_route_detail);
 		mapView = (MapView) findViewById(R.id.route_map);
+		love = findViewById(R.id.route_line_love);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		getIntentData();
 		init();
@@ -66,6 +73,30 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 		registerListener();
 		configureListView();
 		initMap();
+		initLove();
+	}
+
+	private void initLove() {
+		//TODO 初始状态
+
+		love.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (UserManager.INSTANCE.isUserLogin()) {
+					if (hasLoved) {
+						love.setImageResource(R.drawable.route_line_normal);
+
+						//TODO 移除该收藏
+					} else {
+						love.setImageResource(R.drawable.route_line_select);
+
+						//TODO 添加该收藏
+					}
+				} else {
+					ToastUtil.INSTANCE.toast("请先登录");
+				}
+			}
+		});
 	}
 
 	@SuppressLint("SetTextI18n")
