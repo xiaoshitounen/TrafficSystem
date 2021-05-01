@@ -92,6 +92,8 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 
 						//TODO 添加该收藏
 					}
+
+					hasLoved = !hasLoved;
 				} else {
 					ToastUtil.INSTANCE.toast("请先登录");
 				}

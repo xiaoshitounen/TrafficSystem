@@ -1,5 +1,6 @@
 package swu.xl.trafficsystem.manager
 import swu.xl.trafficsystem.sql.entity.UserEntity
+import swu.xl.trafficsystem.util.ThreadUtil
 import java.util.concurrent.CopyOnWriteArrayList
 
 object UserManager {
@@ -25,6 +26,11 @@ object UserManager {
     fun isUserLogin() = user != null
 
     fun getCurrentUser() = user
+
+    fun setCurrentUser(user: UserEntity) {
+        this.user = user
+        ThreadUtil.runOnUiThread { listeners.forEach { it.onUserLogin(user) } }
+    }
 }
 
 interface OnUserChangeListener {

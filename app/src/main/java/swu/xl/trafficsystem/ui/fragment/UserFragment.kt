@@ -1,6 +1,7 @@
 package swu.xl.trafficsystem.ui.fragment
 
 import android.view.View
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_user.*
 import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.base.BaseFragment
@@ -28,8 +29,8 @@ class UserFragment: BaseFragment() {
 
     private fun doLogin(user: UserEntity) {
         activity?.let {
-            user.picture?.let {
-                //Glide.with(it).load(user.picture).into(icon)
+            user.picture?.let { pic ->
+                Glide.with(it).load(pic).into(icon)
             }
             nickname.text = user.nickname
         }
@@ -49,9 +50,7 @@ class UserFragment: BaseFragment() {
         user.setOnClickListener {
             activity?.let {
                 if (UserManager.isUserLogin()) {
-                    activity?.let {
-                        UserEditActivity.start(it)
-                    }
+                    UserEditActivity.start(it)
                 } else {
                     LoginActivity.start(it)
                 }
