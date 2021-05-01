@@ -9,6 +9,7 @@ import swu.xl.trafficsystem.manager.UserManager
 import swu.xl.trafficsystem.sql.entity.UserEntity
 import swu.xl.trafficsystem.ui.activity.FeedBackActivity
 import swu.xl.trafficsystem.ui.activity.LoginActivity
+import swu.xl.trafficsystem.ui.activity.UserEditActivity
 import swu.xl.trafficsystem.ui.activity.WebViewActivity
 import swu.xl.trafficsystem.util.ToastUtil
 
@@ -48,7 +49,9 @@ class UserFragment: BaseFragment() {
         user.setOnClickListener {
             activity?.let {
                 if (UserManager.isUserLogin()) {
-
+                    activity?.let {
+                        UserEditActivity.start(it)
+                    }
                 } else {
                     LoginActivity.start(it)
                 }
