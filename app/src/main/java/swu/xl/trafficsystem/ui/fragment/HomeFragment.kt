@@ -26,14 +26,20 @@ import swu.xl.trafficsystem.amap.AMapUtil
 import swu.xl.trafficsystem.base.BaseFragment
 import swu.xl.trafficsystem.constant.Constant
 import swu.xl.trafficsystem.constant.Constant.NORMAL_COLOR
+import swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_COMPANY
+import swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_HOME
 import swu.xl.trafficsystem.constant.Constant.SELECT_COLOR
 import swu.xl.trafficsystem.manager.MapConfigManager
 import swu.xl.trafficsystem.manager.MapRouteManager
 import swu.xl.trafficsystem.manager.UserManager
 import swu.xl.trafficsystem.model.MapLocation
+import swu.xl.trafficsystem.sql.TrafficSystemRoomBase
 import swu.xl.trafficsystem.thirdparty.other.MapChooseActivity
 import swu.xl.trafficsystem.thirdparty.xpop.CustomEditTextBottomPopup
 import swu.xl.trafficsystem.ui.activity.LoginActivity
+import swu.xl.trafficsystem.ui.activity.RoutePlanActivity
+import swu.xl.trafficsystem.util.AppExecutors
+import swu.xl.trafficsystem.util.ThreadUtil
 import swu.xl.trafficsystem.util.ToastUtil
 
 class HomeFragment: BaseFragment() {
@@ -60,6 +66,9 @@ class HomeFragment: BaseFragment() {
     override fun onResume() {
         super.onResume()
         map.onResume()
+
+        UserManager.home?.let { home_text.text = "回家" }
+        UserManager.company?.let { company_text.text = "回公司" }
     }
 
     override fun onPause() {
@@ -86,9 +95,16 @@ class HomeFragment: BaseFragment() {
         home_set.setOnClickListener { _ ->
             if (UserManager.isUserLogin()) {
                 activity?.let {
-                    it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
-                        putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_HOME)
-                    })
+                    if (UserManager.home == null) {
+                        it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
+                            putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_HOME)
+                        })
+                    } else {
+                        UserManager.home?.let { home ->
+                            MapRouteManager.setLine(home)
+                            RoutePlanActivity.start(it)
+                        }
+                    }
                 }
             } else {
                 ToastUtil.toast("请先登录")
@@ -98,9 +114,16 @@ class HomeFragment: BaseFragment() {
         company_set.setOnClickListener { _ ->
             if (UserManager.isUserLogin()) {
                 activity?.let {
-                    it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
-                        putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_COMPANY)
-                    })
+                    if (UserManager.company == null) {
+                        it.startActivity(Intent(it, MapChooseActivity::class.java).apply {
+                            putExtra(Constant.ROUTE_POINT_KEY, Constant.ROUTE_POINT_COMPANY)
+                        })
+                    } else {
+                        UserManager.company?.let { company ->
+                            MapRouteManager.setLine(company)
+                            RoutePlanActivity.start(it)
+                        }
+                    }
                 }
             } else {
                 ToastUtil.toast("请先登录")

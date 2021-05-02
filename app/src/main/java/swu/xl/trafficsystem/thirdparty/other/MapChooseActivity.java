@@ -55,11 +55,21 @@ import com.amap.api.services.poisearch.PoiSearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import swu.xl.trafficsystem.R;
 import swu.xl.trafficsystem.constant.Constant.RoutePointType;
 import swu.xl.trafficsystem.manager.MapRouteManager;
+import swu.xl.trafficsystem.manager.UserManager;
 import swu.xl.trafficsystem.model.MapLocation;
+import swu.xl.trafficsystem.sql.TrafficSystemRoomBase;
+import swu.xl.trafficsystem.sql.dao.LocationDao;
+import swu.xl.trafficsystem.sql.entity.LocationEntity;
+import swu.xl.trafficsystem.sql.entity.UserEntity;
 import swu.xl.trafficsystem.ui.activity.RoutePlanActivity;
+import swu.xl.trafficsystem.ui.activity.UserEditActivity;
+import swu.xl.trafficsystem.util.AppExecutors;
+import swu.xl.trafficsystem.util.ThreadUtil;
 
 import static swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_COMPANY;
 import static swu.xl.trafficsystem.constant.Constant.ROUTE_POINT_END;
@@ -153,22 +163,69 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
         searchResultAdapter = new SearchResultAdapter(MapChooseActivity.this);
         searchResultAdapter.setOnFinishIconClick(new SearchResultAdapter.OnFinishIconClickListener() {
             @Override
-            public void onFinishIconClick(MapLocation mapLocation) {
+            public void onFinishIconClick(final MapLocation mapLocation) {
                 switch (type) {
                     case ROUTE_POINT_START:
                         MapRouteManager.INSTANCE.changeStartLocation(mapLocation);
+                        startRoutePlan();
                         break;
                     case ROUTE_POINT_END:
                         MapRouteManager.INSTANCE.changeEndLocation(mapLocation);
+                        startRoutePlan();
                         break;
                     case ROUTE_POINT_HOME:
+                        AppExecutors.getDefault().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                LocationDao dao = TrafficSystemRoomBase.Companion.getRoomBase(getBaseContext()).locationDao();
+                                UserEntity user = UserManager.INSTANCE.getCurrentUser();
+                                UserManager.INSTANCE.setHome(mapLocation);
+                                dao.insert(new LocationEntity(
+                                        0,
+                                        mapLocation.getLocation().getLatitude(),
+                                        mapLocation.getLocation().getLongitude(),
+                                        mapLocation.getName(),
+                                        ROUTE_POINT_HOME,
+                                        user.getId()
+                                ));
 
+                                ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
+                                    @Override
+                                    public Unit invoke() {
+                                        finish();
+                                        return null;
+                                    }
+                                });
+                            }
+                        });
                         break;
                     case ROUTE_POINT_COMPANY:
+                        AppExecutors.getDefault().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                LocationDao dao = TrafficSystemRoomBase.Companion.getRoomBase(getBaseContext()).locationDao();
+                                UserEntity user = UserManager.INSTANCE.getCurrentUser();
+                                UserManager.INSTANCE.setCompany(mapLocation);
+                                dao.insert(new LocationEntity(
+                                        0,
+                                        mapLocation.getLocation().getLatitude(),
+                                        mapLocation.getLocation().getLongitude(),
+                                        mapLocation.getName(),
+                                        ROUTE_POINT_COMPANY,
+                                        user.getId()
+                                ));
 
+                                ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
+                                    @Override
+                                    public Unit invoke() {
+                                        finish();
+                                        return null;
+                                    }
+                                });
+                            }
+                        });
                         break;
                 }
-                startRoutePlan();
             }
         });
         listView.setAdapter(searchResultAdapter);
