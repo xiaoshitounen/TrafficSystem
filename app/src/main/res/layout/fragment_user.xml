@@ -53,6 +53,7 @@
             app:cardElevation="8dp"
             >
             <RelativeLayout
+                android:id="@+id/user_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
@@ -67,7 +68,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="地址管理"
+                    android:text="地址查看"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:textColor="@color/userColor"

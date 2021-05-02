@@ -8,10 +8,7 @@ import swu.xl.trafficsystem.base.BaseFragment
 import swu.xl.trafficsystem.manager.OnUserChangeCallBack
 import swu.xl.trafficsystem.manager.UserManager
 import swu.xl.trafficsystem.sql.entity.UserEntity
-import swu.xl.trafficsystem.ui.activity.FeedBackActivity
-import swu.xl.trafficsystem.ui.activity.LoginActivity
-import swu.xl.trafficsystem.ui.activity.UserEditActivity
-import swu.xl.trafficsystem.ui.activity.WebViewActivity
+import swu.xl.trafficsystem.ui.activity.*
 import swu.xl.trafficsystem.util.ToastUtil
 
 class UserFragment: BaseFragment() {
@@ -54,6 +51,15 @@ class UserFragment: BaseFragment() {
                 } else {
                     LoginActivity.start(it)
                 }
+            }
+        }
+        user_location.setOnClickListener {
+            if (UserManager.isUserLogin()) {
+                activity?.let {
+                    UserLocationActivity.start(it)
+                }
+            } else {
+                ToastUtil.toast("请先登录")
             }
         }
         user_document.setOnClickListener {
