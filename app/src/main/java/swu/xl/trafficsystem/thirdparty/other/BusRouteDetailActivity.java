@@ -2,10 +2,12 @@ package swu.xl.trafficsystem.thirdparty.other;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -23,10 +25,20 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.services.route.BusPath;
 import com.amap.api.services.route.BusRouteResult;
 
+import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import swu.xl.trafficsystem.R;
 import swu.xl.trafficsystem.amap.AMapUtil;
 import swu.xl.trafficsystem.constant.Constant;
+import swu.xl.trafficsystem.manager.MapRouteManager;
 import swu.xl.trafficsystem.manager.UserManager;
+import swu.xl.trafficsystem.sql.TrafficSystemRoomBase;
+import swu.xl.trafficsystem.sql.dao.LoveDao;
+import swu.xl.trafficsystem.sql.entity.LoveEntity;
+import swu.xl.trafficsystem.util.AppExecutors;
+import swu.xl.trafficsystem.util.ThreadUtil;
 import swu.xl.trafficsystem.util.ToastUtil;
 
 public class BusRouteDetailActivity extends Activity implements OnMapLoadedListener,
@@ -40,6 +52,15 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	private BusRouteOverlay mBusrouteOverlay;
 	private ImageView love;
 	private boolean hasLoved = false;
+
+	public static void start(Context context, BusPath path, BusRouteResult result) {
+		Intent intent = new Intent(context, BusRouteDetailActivity.class);
+		intent.putExtra("bus_path", path);
+		intent.putExtra("bus_result", result);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -77,7 +98,28 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	}
 
 	private void initLove() {
-		//TODO 初始状态
+		final LoveDao dao = TrafficSystemRoomBase.Companion.getRoomBase(getApplicationContext()).loveDao();
+
+		AppExecutors.getIO().execute(new Runnable() {
+			@Override
+			public void run() {
+				final List<LoveEntity> loves = dao.queryAll(UserManager.INSTANCE.getCurrentUser().getId());
+				for (final LoveEntity loveEntity : loves) {
+					if (TextUtils.equals(loveEntity.getStart(), MapRouteManager.INSTANCE.getLine().getStart().getName())) {
+						if (TextUtils.equals(loveEntity.getEnd(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
+							ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
+								@Override
+								public Unit invoke() {
+									love.setImageResource(R.drawable.route_line_select);
+									return null;
+								}
+							});
+							return;
+						}
+					}
+				}
+			}
+		});
 
 		love.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -86,11 +128,39 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 					if (hasLoved) {
 						love.setImageResource(R.drawable.route_line_normal);
 
-						//TODO 移除该收藏
+						AppExecutors.getIO().execute(new Runnable() {
+							@Override
+							public void run() {
+								final List<LoveEntity> loves = dao.queryAll(UserManager.INSTANCE.getCurrentUser().getId());
+								for (LoveEntity loveEntity : loves) {
+									if (TextUtils.equals(loveEntity.getStart(), MapRouteManager.INSTANCE.getLine().getStart().getName())) {
+										if (TextUtils.equals(loveEntity.getEnd(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
+											dao.delete(loveEntity);
+											return;
+										}
+									}
+								}
+							}
+						});
 					} else {
 						love.setImageResource(R.drawable.route_line_select);
 
-						//TODO 添加该收藏
+						final LoveEntity love = new LoveEntity(
+								0,
+								MapRouteManager.INSTANCE.getLine().getStart().getName(),
+								MapRouteManager.INSTANCE.getLine().getEnd().getName(),
+								AMapUtil.getFriendlyTime((int) mBuspath.getDuration()),
+								mBuspath,
+								mBusRouteResult,
+								UserManager.INSTANCE.getCurrentUser().getId()
+						);
+
+						AppExecutors.getIO().execute(new Runnable() {
+							@Override
+							public void run() {
+								dao.insert(love);
+							}
+						});
 					}
 
 					hasLoved = !hasLoved;

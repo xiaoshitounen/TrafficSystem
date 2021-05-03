@@ -119,14 +119,7 @@ class RoutePlanActivity : BaseActivity() {
                         adapter.setBusPath(result.paths)
                         adapter.addOnBusPathClickListener(object : OnBusPathClickListener {
                             override fun onBusPathClick(path: BusPath) {
-                                val intent = Intent(
-                                    applicationContext,
-                                    BusRouteDetailActivity::class.java
-                                )
-                                intent.putExtra("bus_path", path)
-                                intent.putExtra("bus_result", result)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
+                                BusRouteDetailActivity.start(this@RoutePlanActivity, path, result)
                             }
                         })
                     } else {
