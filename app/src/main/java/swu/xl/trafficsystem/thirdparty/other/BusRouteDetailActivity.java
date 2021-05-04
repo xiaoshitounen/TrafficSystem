@@ -110,21 +110,19 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 				if (UserManager.INSTANCE.isUserLogin()) {
 					final List<LoveEntity> loves = dao.queryAll(UserManager.INSTANCE.getCurrentUser().getId());
 					for (final LoveEntity loveEntity : loves) {
-						if (TextUtils.equals(loveEntity.getStart(), MapRouteManager.INSTANCE.getLine().getStart().getName())) {
-							if (TextUtils.equals(loveEntity.getTarget(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
-								if (TextUtils.equals(loveEntity.getSteps().get(0).getName(), AMapUtil.getBusStepList(mBuspath).get(0).getName())) {
-									if (loveEntity.getSteps().size() == AMapUtil.getBusStepList(mBuspath).size()) {
-										ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
-											@Override
-											public Unit invoke() {
-												love.setImageResource(R.drawable.route_line_select);
-												return null;
-											}
-										});
-									}
+						if (TextUtils.equals(loveEntity.getTarget(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
+							if (TextUtils.equals(loveEntity.getSteps().get(0).getName(), AMapUtil.getBusStepList(mBuspath).get(0).getName())) {
+								if (loveEntity.getSteps().size() == AMapUtil.getBusStepList(mBuspath).size()) {
+									ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
+										@Override
+										public Unit invoke() {
+											love.setImageResource(R.drawable.route_line_select);
+											return null;
+										}
+									});
 								}
-								return;
 							}
+							return;
 						}
 					}
 				}
@@ -143,11 +141,14 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 							public void run() {
 								final List<LoveEntity> loves = dao.queryAll(UserManager.INSTANCE.getCurrentUser().getId());
 								for (LoveEntity loveEntity : loves) {
-									if (TextUtils.equals(loveEntity.getStart(), MapRouteManager.INSTANCE.getLine().getStart().getName())) {
-										if (TextUtils.equals(loveEntity.getTarget(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
-											dao.delete(loveEntity);
-											return;
+									if (TextUtils.equals(loveEntity.getTarget(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
+										if (TextUtils.equals(loveEntity.getSteps().get(0).getName(), AMapUtil.getBusStepList(mBuspath).get(0).getName())) {
+											if (loveEntity.getSteps().size() == AMapUtil.getBusStepList(mBuspath).size()) {
+												dao.delete(loveEntity);
+												return;
+											}
 										}
+										return;
 									}
 								}
 							}

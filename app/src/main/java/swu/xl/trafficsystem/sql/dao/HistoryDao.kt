@@ -11,6 +11,9 @@ interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(history: HistoryEntity)
 
+    @Query("DELETE FROM history")
+    fun deleteAll()
+
     @Query("SELECT * FROM history WHERE uid = :user")
     fun queryAll(user: Int): List<HistoryEntity>
 

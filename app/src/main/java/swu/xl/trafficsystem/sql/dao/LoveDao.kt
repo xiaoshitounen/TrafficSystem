@@ -11,6 +11,9 @@ interface LoveDao {
     @Insert
     fun insert(love: LoveEntity)
 
+    @Query("DELETE FROM love")
+    fun deleteAll()
+
     @Delete
     fun delete(love: LoveEntity)
 

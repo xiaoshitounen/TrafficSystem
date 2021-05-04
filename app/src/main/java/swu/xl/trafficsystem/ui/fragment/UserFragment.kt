@@ -89,5 +89,14 @@ class UserFragment: BaseFragment() {
                 ToastUtil.toast("请先登录")
             }
         }
+        user_setting.setOnClickListener {
+            if (UserManager.isUserLogin()) {
+                activity?.let {
+                    SettingActivity.start(it)
+                }
+            } else {
+                ToastUtil.toast("请先登录")
+            }
+        }
     }
 }

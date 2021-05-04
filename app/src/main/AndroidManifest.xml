@@ -74,6 +74,8 @@
         <activity android:name=".ui.activity.UserLocationActivity" />
 
         <activity android:name=".ui.activity.UserLoveActivity" />
+
+        <activity android:name=".ui.activity.SettingActivity" />
     </application>
 
 </manifest>
