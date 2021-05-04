@@ -9,6 +9,7 @@ object MapRouteManager {
     private var startPoint = MapLocation(LatLonPoint(39.942295, 116.335891), "默认起点")
     private var endPoint: MapLocation = MapLocation(LatLonPoint(39.995576, 116.481288), "默认终点")
     private var currentPoint = startPoint
+    var currentAddress = "环球都会"
 
     fun setCurrent(current: MapLocation) {
         currentPoint = current

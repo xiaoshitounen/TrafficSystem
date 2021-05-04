@@ -13,7 +13,7 @@ import swu.xl.trafficsystem.sql.entity.LocationEntity
 import swu.xl.trafficsystem.sql.entity.LoveEntity
 import swu.xl.trafficsystem.sql.entity.UserEntity
 
-@Database(entities = [HistoryEntity::class, UserEntity::class, LocationEntity::class, LoveEntity::class], version = 6)
+@Database(entities = [HistoryEntity::class, UserEntity::class, LocationEntity::class, LoveEntity::class], version = 10)
 abstract class TrafficSystemRoomBase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
     abstract fun userDao(): UserDao

@@ -41,7 +41,7 @@ class BusPathItemView : LinearLayout {
         }
         route_station_number.text = "${number}站"
         //花费金币
-        route_cost.text = "${path.cost.toInt()}元"
+        route_cost.text = "${path.cost}元"
         //上站点
         if (path.steps[0].entrance == null) {
             route_station_start.text = "${path.steps[0].busLines[0].departureBusStation.busStationName}上车"

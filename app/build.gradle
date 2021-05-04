@@ -35,7 +35,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     //3D地图so及jar
     implementation 'com.amap.api:3dmap:latest.integration'
     //定位功能

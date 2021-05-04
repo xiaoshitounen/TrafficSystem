@@ -22,8 +22,8 @@ import com.amap.api.maps.AMap.OnMarkerClickListener;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusPath;
-import com.amap.api.services.route.BusRouteResult;
 
 import java.util.List;
 
@@ -31,9 +31,9 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import swu.xl.trafficsystem.R;
 import swu.xl.trafficsystem.amap.AMapUtil;
-import swu.xl.trafficsystem.constant.Constant;
 import swu.xl.trafficsystem.manager.MapRouteManager;
 import swu.xl.trafficsystem.manager.UserManager;
+import swu.xl.trafficsystem.sql.RoomHelper;
 import swu.xl.trafficsystem.sql.TrafficSystemRoomBase;
 import swu.xl.trafficsystem.sql.dao.LoveDao;
 import swu.xl.trafficsystem.sql.entity.LoveEntity;
@@ -46,17 +46,20 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	private AMap aMap;
 	private MapView mapView;
 	private BusPath mBuspath;
-	private BusRouteResult mBusRouteResult;
 	private ListView mBusSegmentList;
 	private BusSegmentListAdapter mBusSegmentListAdapter;
 	private BusRouteOverlay mBusrouteOverlay;
 	private ImageView love;
 	private boolean hasLoved = false;
 
-	public static void start(Context context, BusPath path, BusRouteResult result) {
+	private LatLonPoint start;
+	private LatLonPoint target;
+
+	public static void start(Context context, BusPath path, LatLonPoint start, LatLonPoint target) {
 		Intent intent = new Intent(context, BusRouteDetailActivity.class);
 		intent.putExtra("bus_path", path);
-		intent.putExtra("bus_result", result);
+		intent.putExtra("start", start);
+		intent.putExtra("target", target);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
@@ -85,7 +88,8 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 		Intent intent = getIntent();
 		if (intent != null) {
 			mBuspath = intent.getParcelableExtra("bus_path");
-			mBusRouteResult = intent.getParcelableExtra("bus_result");
+			start = intent.getParcelableExtra("start");
+			target = intent.getParcelableExtra("target");
 		}
 	}
 
@@ -103,18 +107,24 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 		AppExecutors.getIO().execute(new Runnable() {
 			@Override
 			public void run() {
-				final List<LoveEntity> loves = dao.queryAll(UserManager.INSTANCE.getCurrentUser().getId());
-				for (final LoveEntity loveEntity : loves) {
-					if (TextUtils.equals(loveEntity.getStart(), MapRouteManager.INSTANCE.getLine().getStart().getName())) {
-						if (TextUtils.equals(loveEntity.getEnd(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
-							ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
-								@Override
-								public Unit invoke() {
-									love.setImageResource(R.drawable.route_line_select);
-									return null;
+				if (UserManager.INSTANCE.isUserLogin()) {
+					final List<LoveEntity> loves = dao.queryAll(UserManager.INSTANCE.getCurrentUser().getId());
+					for (final LoveEntity loveEntity : loves) {
+						if (TextUtils.equals(loveEntity.getStart(), MapRouteManager.INSTANCE.getLine().getStart().getName())) {
+							if (TextUtils.equals(loveEntity.getTarget(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
+								if (TextUtils.equals(loveEntity.getSteps().get(0).getName(), AMapUtil.getBusStepList(mBuspath).get(0).getName())) {
+									if (loveEntity.getSteps().size() == AMapUtil.getBusStepList(mBuspath).size()) {
+										ThreadUtil.INSTANCE.runOnUiThread(new Function0<Unit>() {
+											@Override
+											public Unit invoke() {
+												love.setImageResource(R.drawable.route_line_select);
+												return null;
+											}
+										});
+									}
 								}
-							});
-							return;
+								return;
+							}
 						}
 					}
 				}
@@ -134,7 +144,7 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 								final List<LoveEntity> loves = dao.queryAll(UserManager.INSTANCE.getCurrentUser().getId());
 								for (LoveEntity loveEntity : loves) {
 									if (TextUtils.equals(loveEntity.getStart(), MapRouteManager.INSTANCE.getLine().getStart().getName())) {
-										if (TextUtils.equals(loveEntity.getEnd(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
+										if (TextUtils.equals(loveEntity.getTarget(), MapRouteManager.INSTANCE.getLine().getEnd().getName())) {
 											dao.delete(loveEntity);
 											return;
 										}
@@ -145,19 +155,22 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 					} else {
 						love.setImageResource(R.drawable.route_line_select);
 
-						final LoveEntity love = new LoveEntity(
-								0,
-								MapRouteManager.INSTANCE.getLine().getStart().getName(),
-								MapRouteManager.INSTANCE.getLine().getEnd().getName(),
-								AMapUtil.getFriendlyTime((int) mBuspath.getDuration()),
-								mBuspath,
-								mBusRouteResult,
-								UserManager.INSTANCE.getCurrentUser().getId()
-						);
-
 						AppExecutors.getIO().execute(new Runnable() {
 							@Override
 							public void run() {
+								String start = MapRouteManager.INSTANCE.getLine().getStart().getName();
+								if (TextUtils.equals(start, "当前位置")) {
+									start = MapRouteManager.INSTANCE.getCurrentAddress();
+								}
+								LoveEntity love = new LoveEntity(
+										0,
+										start,
+										MapRouteManager.INSTANCE.getLine().getEnd().getName(),
+										AMapUtil.getFriendlyTime((int) mBuspath.getDuration()),
+										AMapUtil.getFriendlyLength((int) mBuspath.getWalkDistance()),
+										AMapUtil.getBusStepList(mBuspath),
+										UserManager.INSTANCE.getCurrentUser().getId()
+								);
 								dao.insert(love);
 							}
 						});
@@ -208,8 +221,7 @@ public class BusRouteDetailActivity extends Activity implements OnMapLoadedListe
 	private void initMap() {
 		aMap.clear();// 清理地图上的所有覆盖物
 		mBusrouteOverlay = new BusRouteOverlay(this, aMap,
-				mBuspath, mBusRouteResult.getStartPos(),
-				mBusRouteResult.getTargetPos());
+				mBuspath, start, target);
 		mBusrouteOverlay.removeFromMap();
 	}
 

@@ -394,6 +394,7 @@ class HomeFragment: BaseFragment() {
             latitude = it.latitude
             longitude = it.longitude
             //保存当前位置
+            MapRouteManager.currentAddress = it.address
             MapRouteManager.setCurrent(MapLocation(LatLonPoint(latitude, longitude), "当前位置"))
 
             //CameraPosition4个参数: 位置，缩放级别，目标可视区域倾斜度，可视区域指向方向（正北逆时针算起，0-360）

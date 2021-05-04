@@ -1,75 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tool="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:layout_marginEnd="5dp"
-    android:gravity="center_vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="4dp"
+    >
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="5dp"
+        android:layout_height="match_parent"
         >
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:padding="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
                 >
+
                 <TextView
                     android:id="@+id/start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
+                    android:textSize="14sp"
                     android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    tool:text="start"
+                    tools:text="start"
                     />
+
                 <TextView
                     android:id="@+id/end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
+                    android:textSize="14sp"
                     android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:layout_marginStart="20dp"
-                    tool:text="end"
+                    android:layout_marginTop="5dp"
+                    tools:text="end"
                     />
             </LinearLayout>
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                tool:text="time"
-                />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/route_step_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center_vertical"
+                    tools:text="51分钟"
+                    />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/map_route_walk_distance"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="3dp"
+                    android:scaleType="fitXY"
+                    android:paddingTop="2dp"
+                    />
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center_vertical"
+                    tools:text="2.1公里"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

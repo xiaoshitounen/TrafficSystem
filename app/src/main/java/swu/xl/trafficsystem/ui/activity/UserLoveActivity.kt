@@ -8,11 +8,10 @@ import swu.xl.trafficsystem.R
 import swu.xl.trafficsystem.adapter.OnUserLovePathClickListener
 import swu.xl.trafficsystem.adapter.UserLoveAdapter
 import swu.xl.trafficsystem.base.BaseActivity
-import swu.xl.trafficsystem.sql.TrafficSystemRoomBase
-import swu.xl.trafficsystem.util.AppExecutors
 import swu.xl.trafficsystem.manager.UserManager
+import swu.xl.trafficsystem.sql.TrafficSystemRoomBase
 import swu.xl.trafficsystem.sql.entity.LoveEntity
-import swu.xl.trafficsystem.thirdparty.other.BusRouteDetailActivity
+import swu.xl.trafficsystem.util.AppExecutors
 import swu.xl.trafficsystem.util.ThreadUtil
 
 class UserLoveActivity : BaseActivity() {
@@ -32,14 +31,6 @@ class UserLoveActivity : BaseActivity() {
         list.layoutManager = LinearLayoutManager(this)
         list.adapter = adapter
         initLove()
-    }
-
-    override fun initListener() {
-        adapter.addOnBusPathClickListener(object : OnUserLovePathClickListener {
-            override fun onPathClick(data: LoveEntity) {
-                BusRouteDetailActivity.start(this@UserLoveActivity, data.path, data.result)
-            }
-        })
     }
 
     private fun initLove() {
