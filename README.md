@@ -1,5 +1,5 @@
 # TrafficSystem
-图片挂了，可以参考博客：[Android项目：高德地图](http://182.254.228.71/Android%E9%A1%B9%E7%9B%AE%EF%BC%9A%E9%AB%98%E5%BE%B7%E5%9C%B0%E5%9B%BE/)
+图片挂了，可以参考博客：[Android项目：高德地图](http://www.fanandjiu.com/article/6b952445.html)
 
 ### 一 视觉效果
 ![](https://android-project-1300729795.cos.ap-guangzhou.myqcloud.com/trafficsystem/traffic1.jpeg)
